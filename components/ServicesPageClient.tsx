@@ -125,11 +125,11 @@ export default function ServicesPageClient() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-white">
+    <div className="flex flex-col min-h-screen w-full bg-background">
 
       {/* ─── Hero ─── */}
       <section
-        className="relative w-full overflow-hidden bg-[#0a192f]"
+        className="relative w-full overflow-hidden bg-primary-900"
         style={{ height: "calc(100vh - 80px)", minHeight: 560 }}
       >
         <div
@@ -141,7 +141,7 @@ export default function ServicesPageClient() {
             backgroundPosition: "center center",
           }}
         />
-        <div className="absolute inset-0 bg-[#0a192f]/75" />
+        <div className="absolute inset-0 bg-primary-900/75" />
         <div className="absolute inset-0 bg-primary/10" />
         <div
           className="absolute inset-0 opacity-10"
@@ -176,14 +176,14 @@ export default function ServicesPageClient() {
       </section>
 
       {/* ─── Services Grid (image cards) ─── */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <h3 className="text-primary font-bold tracking-widest uppercase text-sm">Our Services</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
               How RISE Serves the Community
             </h2>
-            <p className="text-gray-600 text-lg">
+            <p className="text-muted-foreground text-lg">
               Each service addresses a specific need in our community. Click{" "}
               <strong className="text-primary">&quot;Inquire&quot;</strong> on any service to auto-fill the form below.
             </p>
@@ -194,7 +194,7 @@ export default function ServicesPageClient() {
               <div
                 key={svc.id}
                 id={svc.id}
-                className="group flex flex-col rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 scroll-mt-24"
+                className="group flex flex-col rounded-3xl overflow-hidden border border-border shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 scroll-mt-24"
               >
                 {/* ── Background image header ── */}
                 <div className="relative h-52 overflow-hidden">
@@ -215,8 +215,8 @@ export default function ServicesPageClient() {
                 </div>
 
                 {/* ── Card body ── */}
-                <div className="flex flex-col flex-grow bg-white p-6 space-y-4">
-                  <p className="text-gray-600 text-sm leading-relaxed">{svc.description}</p>
+                <div className="flex flex-col flex-grow bg-background p-6 space-y-4">
+                  <p className="text-muted-foreground text-sm leading-relaxed">{svc.description}</p>
 
                   <ul className="space-y-2">
                     {svc.features.map((f, i) => (
@@ -251,10 +251,10 @@ export default function ServicesPageClient() {
             {/* Left copy */}
             <div className="space-y-4">
               <h3 className="text-primary font-bold tracking-widest uppercase text-sm">Not Sure Where to Start?</h3>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground leading-tight">
                 Tell Us What You Need — We&apos;ll Point You in the Right Direction.
               </h2>
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="text-muted-foreground text-lg leading-relaxed">
                 Our team is here to help you navigate the resources available. Whether you want to donate essential items, volunteer, partner with us, or connect with mentorship and career guidance, reach out and we&apos;ll point you in the right direction.
               </p>
 
@@ -267,7 +267,7 @@ export default function ServicesPageClient() {
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
                       selectedService === svc.id
                         ? "bg-primary text-white border-primary"
-                        : "bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
+                        : "bg-white text-muted-foreground border-gray-200 hover:border-primary hover:text-primary"
                     }`}
                   >
                     {svc.title}
@@ -277,13 +277,13 @@ export default function ServicesPageClient() {
             </div>
 
             {/* Right form */}
-            <div ref={formRef} className="bg-white rounded-2xl shadow-xl shadow-primary/5 border border-primary/10 p-8">
+            <div ref={formRef} className="bg-background rounded-3xl shadow-xl shadow-primary/5 border border-primary/10 p-8">
               {submitted ? (
                 <div className="text-center py-8 space-y-4 animate-fade-in">
                   <div className="mx-auto w-12 h-12 rounded-full bg-green-50 border border-green-200 flex items-center justify-center text-green-500">
                     <CheckCircle2 size={24} />
                   </div>
-                  <h4 className="text-xl font-heading font-bold text-gray-900">Inquiry Sent!</h4>
+                  <h4 className="text-xl font-heading font-bold text-foreground">Inquiry Sent!</h4>
                   <p className="text-sm text-gray-500 max-w-xs mx-auto">
                     Thank you. We have received your inquiry and will contact you within 24 hours.
                   </p>
@@ -298,7 +298,7 @@ export default function ServicesPageClient() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <h4 className="text-xl font-heading font-bold text-gray-900">Quick Service Inquiry</h4>
+                    <h4 className="text-xl font-heading font-bold text-foreground">Quick Service Inquiry</h4>
                     <p className="text-sm text-gray-500 mt-1">
                       {selectedService
                         ? `Inquiring about: ${SERVICE_OPTIONS[selectedService]}`
@@ -307,7 +307,7 @@ export default function ServicesPageClient() {
                   </div>
 
                   {submitError && (
-                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-650 font-semibold animate-fade-in">
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-semibold animate-fade-in">
                       {submitError}
                     </div>
                   )}
@@ -426,7 +426,7 @@ export default function ServicesPageClient() {
       </section>
 
       {/* ─── Final CTA ─── */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-background">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-primary rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
             <div

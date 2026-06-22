@@ -58,11 +58,11 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen w-full bg-white">
+    <div className="flex flex-col min-h-screen w-full bg-background">
 
       {/* ─── Hero ─── */}
       <section
-        className="relative w-full overflow-hidden bg-[#0a192f]"
+        className="relative w-full overflow-hidden bg-primary-900"
         style={{ height: "calc(100vh - 80px)", minHeight: 560 }}
       >
         <div
@@ -74,7 +74,7 @@ export default function AboutPage() {
             backgroundPosition: "center center",
           }}
         />
-        <div className="absolute inset-0 bg-[#0a192f]/70" />
+        <div className="absolute inset-0 bg-primary-900/70" />
         <div className="absolute inset-0 bg-primary/10" />
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/3 pointer-events-none" />
@@ -117,7 +117,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 space-y-3">
             <h3 className="text-primary font-bold tracking-widest uppercase text-sm">Our Leadership</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900">Meet the Visionary Behind RISE</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">Meet the Visionary Behind RISE</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -146,11 +146,11 @@ export default function AboutPage() {
             {/* Bio */}
             <div className="space-y-6">
               <div>
-                <h3 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-1">Toney Favors</h3>
+                <h3 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-1">Toney Favors</h3>
                 <p className="text-accent font-semibold text-lg">Chief Innovation Officer & Founder</p>
               </div>
 
-              <div className="space-y-4 text-gray-600 text-lg leading-relaxed">
+              <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
                 <p>
                   Toney Favors is the visionary founder and Chief Innovation Officer of RISE, driven by an unwavering belief that every individual regardless of their circumstances deserves access to the tools, resources, and support needed to thrive.
                 </p>
@@ -185,12 +185,12 @@ export default function AboutPage() {
                   <span className="w-8 h-0.5 bg-primary rounded-full" />
                   Who We Are
                 </h3>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 leading-tight">
+                <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground leading-tight">
                   Building a Stronger Community Through Education &amp; Service.
                 </h2>
               </div>
 
-              <div className="space-y-4 text-gray-600 text-lg leading-relaxed">
+              <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
                 <p>
                   Resourceful Impact in Scholastic Education (RISE) is committed to empowering individuals to excel academically and professionally. We believe that true impact happens when we address the immediate needs of our community from food security and clothing to education and career readiness.
                 </p>
@@ -206,7 +206,7 @@ export default function AboutPage() {
                   "Career mentorship and talent pipeline programs",
                   "Educational resources for all backgrounds",
                 ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700">
+                  <li key={i} className="flex items-center gap-3 text-foreground">
                     <CheckCircle2 className="text-primary h-5 w-5 shrink-0" />
                     {item}
                   </li>
@@ -215,7 +215,7 @@ export default function AboutPage() {
             </div>
 
             {/* Image */}
-            <div className="relative group rounded-3xl overflow-hidden aspect-square sm:aspect-[4/3] lg:aspect-square w-full min-h-[300px] bg-gray-100 shadow-2xl shadow-primary/10">
+            <div className="relative group rounded-3xl overflow-hidden aspect-square sm:aspect-[4/3] lg:aspect-square w-full min-h-[300px] bg-muted shadow-2xl shadow-primary/10">
               <Image
                 src="/add-image-3.png"
                 alt="RISE team and community outreach"
@@ -235,14 +235,14 @@ export default function AboutPage() {
       </section>
 
       {/* ─── Values ─── */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 space-y-3">
             <h3 className="text-primary font-bold tracking-widest uppercase text-sm">What We Stand For</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
               Overcoming Challenges With Our True Values
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Our values aren&apos;t just words on a wall — they&apos;re the principles that guide every decision, every event, and every interaction we have.
             </p>
           </div>
@@ -251,13 +251,13 @@ export default function AboutPage() {
             {VALUES.map((val, i) => (
               <div
                 key={i}
-                className="group bg-white border border-gray-100 rounded-2xl p-7 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 hover-sheen"
+                className="group bg-background border border-border rounded-3xl p-7 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 hover-sheen"
               >
                 <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                   {val.icon}
                 </div>
-                <h4 className="text-lg font-heading font-bold text-gray-900 mb-3">{val.title}</h4>
-                <p className="text-gray-600 text-sm leading-relaxed">{val.desc}</p>
+                <h4 className="text-lg font-heading font-bold text-foreground mb-3">{val.title}</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">{val.desc}</p>
               </div>
             ))}
           </div>
@@ -265,9 +265,9 @@ export default function AboutPage() {
       </section>
 
       {/* ─── Call to Action ─── */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-muted">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#0a192f] rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
+          <div className="bg-primary-900 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
             <div
               className="absolute inset-0 opacity-20"
               style={{ backgroundImage: "radial-gradient(#007ED1 2px, transparent 2px)", backgroundSize: "30px 30px" }}
@@ -279,7 +279,7 @@ export default function AboutPage() {
               <h2 className="text-3xl md:text-5xl font-heading font-bold text-white text-balance max-w-2xl mx-auto">
                 Join Us in Making a Lasting Impact.
               </h2>
-              <p className="text-lg text-gray-300 max-w-xl mx-auto">
+              <p className="text-lg text-white/70 max-w-xl mx-auto">
                 Whether you choose to donate to our programs or volunteer your time at our next event, your contribution matters more than you know.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

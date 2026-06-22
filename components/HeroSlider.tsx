@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Heart, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Magnetic } from "@/components/motion/Magnetic";
 
 const SLIDES = [
   {
@@ -182,20 +183,24 @@ export default function HeroSlider() {
                   transition: "opacity 0.65s ease 0.5s, transform 0.65s ease 0.5s",
                 }}
               >
-                <Link
-                  href={s.ctaHref}
-                  className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-white bg-accent hover:bg-accent-hover transition-all duration-200 hover:-translate-y-1 shadow-lg shadow-accent/30"
-                >
-                  {s.ctaLabel}
-                  <Heart className="ml-2 h-5 w-5" />
-                </Link>
-                <Link
-                  href={s.ctaSecondaryHref}
-                  className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-white border-2 border-white/30 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1"
-                >
-                  {s.ctaSecondary}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                <Magnetic strength={0.25}>
+                  <Link
+                    href={s.ctaHref}
+                    className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-white bg-accent hover:bg-accent-hover transition-all duration-200 hover:-translate-y-1 shadow-lg shadow-accent/30 hover-sheen"
+                  >
+                    {s.ctaLabel}
+                    <Heart className="ml-2 h-5 w-5" />
+                  </Link>
+                </Magnetic>
+                <Magnetic strength={0.2}>
+                  <Link
+                    href={s.ctaSecondaryHref}
+                    className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-white border-2 border-white/30 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1"
+                  >
+                    {s.ctaSecondary}
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Magnetic>
               </div>
             </div>
           </div>

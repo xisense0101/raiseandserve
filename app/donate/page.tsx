@@ -11,7 +11,7 @@ export const metadata = createMetadata({
 
 export default function DonatePage() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-5rem)] w-full bg-[#f8fafc] justify-center items-center py-6 px-4">
+    <div className="flex flex-col min-h-[calc(100vh-5rem)] w-full bg-muted justify-center items-center py-6 px-4">
       <DonatePageClient />
     </div>
   );

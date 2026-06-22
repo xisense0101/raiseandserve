@@ -10,7 +10,7 @@ export const metadata = createMetadata({
 
 export default function ShopPage() {
   return (
-    <div className="flex flex-col h-[calc(100dvh-5rem)] w-full overflow-hidden bg-slate-50">
+    <div className="flex flex-col h-[calc(100dvh-5rem)] w-full overflow-hidden bg-muted">
       <div className="w-full flex justify-center pt-4 px-4 shrink-0">
         <div className="w-full max-w-[800px] px-6 py-4 bg-primary/5 rounded-2xl border border-primary/10 text-xs text-slate-500 leading-relaxed font-body shadow-sm">
           <div className="flex gap-3">
@@ -25,7 +25,7 @@ export default function ShopPage() {
         </div>
       </div>
       
-      <section className="flex-1 w-full overflow-hidden mt-4 relative bg-white">
+      <section className="flex-1 w-full overflow-hidden mt-4 relative bg-background">
         <iframe
           title="Donation form powered by Zeffy"
           style={{

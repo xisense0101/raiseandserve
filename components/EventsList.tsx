@@ -124,7 +124,7 @@ export default function EventsList() {
         {EVENTS.map((event) => (
           <div 
             key={event.id}
-            className="flex flex-col bg-white rounded-3xl overflow-hidden border border-slate-200/60 shadow-sm h-full"
+            className="flex flex-col bg-background rounded-3xl overflow-hidden border border-border shadow-sm h-full"
           >
             {/* Image Banner - Full resolution, scales to fit bounds, no crop */}
             <button
@@ -147,12 +147,12 @@ export default function EventsList() {
             <div className="p-6 lg:p-8 flex flex-col justify-between flex-grow">
               <div className="space-y-4 flex-1 flex flex-col mb-6">
                 <div className="space-y-2 flex-none">
-                  <h2 className="text-2xl font-heading font-extrabold text-slate-900 leading-tight">
+                  <h2 className="text-2xl font-heading font-extrabold text-foreground leading-tight">
                     {event.title}
                   </h2>
                   
                   {/* Meta details */}
-                  <div className="flex flex-wrap gap-y-2 gap-x-4 text-xs text-slate-650 font-semibold border-y border-slate-100 py-3">
+                  <div className="flex flex-wrap gap-y-2 gap-x-4 text-xs text-muted-foreground font-semibold border-y border-slate-100 py-3">
                     <div className="flex items-center gap-1.5">
                       <Calendar className="w-4 h-4 text-primary" />
                       <span>{event.date}</span>
@@ -172,7 +172,7 @@ export default function EventsList() {
 
                 {/* Description - Flows naturally */}
                 <div className="flex-1">
-                  <p className="text-slate-600 leading-relaxed text-sm font-body whitespace-pre-line">
+                  <p className="text-muted-foreground leading-relaxed text-sm font-body whitespace-pre-line">
                     {event.description}
                   </p>
                 </div>

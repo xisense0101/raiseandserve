@@ -143,7 +143,7 @@ export default function VolunteerForm() {
         </div>
         <div className="space-y-2">
           <h3 className="text-2xl font-heading font-black text-slate-900">Application Submitted!</h3>
-          <p className="text-sm md:text-base text-slate-650 leading-relaxed max-w-md mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-md mx-auto">
             Thank you for applying to volunteer with RISE! We have received your details, and a coordinator will connect with you soon regarding the upcoming events.
           </p>
         </div>
@@ -327,7 +327,7 @@ export default function VolunteerForm() {
                   className={`p-4 rounded-xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
                     isChecked
                       ? "bg-white border-primary shadow-sm text-slate-900"
-                      : "bg-white/50 border-slate-200 text-slate-650 hover:bg-white hover:border-slate-350"
+                      : "bg-white/50 border-slate-200 text-muted-foreground hover:bg-white hover:border-slate-350"
                   }`}
                 >
                   <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 shrink-0 transition-all ${

@@ -1,22 +1,51 @@
 @import "tailwindcss";
 
 @theme {
+  /* ─── Brand: Primary (blue, from the RISE logo) ─── */
   --color-primary: #007ED1;
   --color-primary-dark: #005C99;
   --color-primary-light: #E6F2F9;
 
+  --color-primary-50: #EAF6FE;
+  --color-primary-100: #D2ECFC;
+  --color-primary-200: #A6D9F9;
+  --color-primary-300: #71C2F2;
+  --color-primary-400: #3DA4E5;
+  --color-primary-500: #1389D6;
+  --color-primary-600: #007ED1;
+  --color-primary-700: #0064A8;
+  --color-primary-800: #00507F;
+  --color-primary-900: #003655;
+
   --color-secondary: #005C99;
 
+  /* ─── Brand: Accent (orange, from the RISE logo) ─── */
   --color-accent: #FF9B00;
   --color-accent-hover: #E68A00;
 
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
+  --color-accent-50: #FFF6E5;
+  --color-accent-100: #FFEAC2;
+  --color-accent-200: #FFD68A;
+  --color-accent-300: #FFC04D;
+  --color-accent-400: #FFAE26;
+  --color-accent-500: #FF9B00;
+  --color-accent-600: #E68A00;
+  --color-accent-700: #B86E00;
+  --color-accent-800: #8A5300;
+  --color-accent-900: #5C3700;
 
-  --color-muted: #f8fafc;
-  --color-muted-foreground: #64748b;
+  /* ─── Signal (success / impact — new, the palette had none) ─── */
+  --color-signal: #2F9E6E;
+  --color-signal-light: #E7F6EF;
+  --color-signal-dark: #1F7350;
 
-  --color-border: #e2e8f0;
+  --color-background: #FDFCF7;
+  --color-foreground: #334155;
+
+  --color-muted: #F5F3ED;
+  --color-muted-foreground: #6b7280;
+
+  --color-border: #e7e4db;
 
   --font-heading: var(--font-heading), sans-serif;
   --font-body: var(--font-body), sans-serif;
@@ -24,8 +53,8 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #0f172a;
+    --background: #FDFCF7;
+    --foreground: #334155;
   }
 
   html {
@@ -51,6 +80,33 @@
   }
 }
 
+/* ─── Type scale (explicit hierarchy, opt-in per component) ─── */
+@layer components {
+  .text-display {
+    @apply text-5xl sm:text-6xl md:text-7xl font-heading font-extrabold leading-[1.05] tracking-tight;
+  }
+
+  .text-h1 {
+    @apply text-4xl md:text-5xl font-heading font-bold leading-tight tracking-tight;
+  }
+
+  .text-h2 {
+    @apply text-3xl md:text-4xl font-heading font-bold leading-tight;
+  }
+
+  .text-h3 {
+    @apply text-xl md:text-2xl font-heading font-semibold leading-snug;
+  }
+
+  .text-lead {
+    @apply text-lg md:text-xl leading-relaxed text-stone-600;
+  }
+
+  .text-eyebrow {
+    @apply inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary;
+  }
+}
+
 /* ─── Animations ─── */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
@@ -67,6 +123,14 @@
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Frosted navy glass — floating navbar, footer panels */
+  .glass-dark {
+    background: rgba(0, 54, 85, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .text-balance {

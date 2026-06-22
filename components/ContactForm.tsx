@@ -64,7 +64,7 @@ export default function ContactForm() {
           <CheckCircle2 size={24} />
         </div>
         <h3 className="text-xl font-bold text-slate-900">Message Sent!</h3>
-        <p className="text-sm text-slate-650 leading-relaxed max-w-sm mx-auto">
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
           Thank you for reaching out to RISE. We have received your inquiry and our team will get back to you as soon as possible.
         </p>
         <button
@@ -81,7 +81,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="flex items-start gap-2.5 p-4 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-650 font-semibold animate-fade-in">
+        <div className="flex items-start gap-2.5 p-4 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-semibold animate-fade-in">
           <AlertCircle size={16} className="shrink-0 text-red-500 mt-0.5" />
           <span>{error}</span>
         </div>

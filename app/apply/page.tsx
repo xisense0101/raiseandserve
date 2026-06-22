@@ -12,17 +12,17 @@ export const metadata = createMetadata({
 
 export default function ApplyPage() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-5rem)] w-full bg-[#f8fafc] justify-center items-center py-12 px-4 space-y-12">
+    <div className="flex flex-col min-h-[calc(100vh-5rem)] w-full bg-muted justify-center items-center py-12 px-4 space-y-12">
       <ApplyPageClient />
-      
-      <div className="w-full max-w-4xl rounded-3xl border border-primary/15 bg-white p-8 text-center shadow-sm">
+
+      <div className="w-full max-w-4xl rounded-3xl border border-primary/15 bg-background p-8 text-center shadow-sm">
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-primary">
           Volunteer With RISE
         </p>
-        <h2 className="mt-3 text-2xl font-heading font-black text-slate-900 sm:text-3xl">
+        <h2 className="mt-3 text-2xl font-heading font-black text-foreground sm:text-3xl">
           Apply for Volunteer Opportunities
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-650 sm:text-base">
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
           Interested in supporting upcoming events and community outreach? Complete the volunteer application form to get involved.
         </p>
         <Link

@@ -118,15 +118,15 @@ export default function ServicesSlider() {
           return (
             <div
               key={i}
-              className="group bg-white p-8 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col hover-sheen"
+              className="group bg-background p-8 rounded-3xl border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col hover-sheen"
             >
-              <div className="h-14 w-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:scale-110">
+              <div className="h-14 w-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:scale-110">
                 <IconComponent size={28} />
               </div>
-              <h4 className="text-xl font-heading font-bold text-gray-900 mb-3">
+              <h4 className="text-xl font-heading font-bold text-foreground mb-3">
                 {program.title}
               </h4>
-              <p className="text-gray-600 mb-8 flex-grow leading-relaxed">
+              <p className="text-muted-foreground mb-8 flex-grow leading-relaxed">
                 {program.desc}
               </p>
               <Link
@@ -167,21 +167,21 @@ export default function ServicesSlider() {
                   key={i}
                   className={`w-[82%] shrink-0 transition-all duration-500 ease-out origin-center ${
                     isActive
-                      ? "scale-100 opacity-100 shadow-lg shadow-slate-200/50 border-primary/30"
-                      : "scale-95 opacity-50 border-gray-100"
-                  } bg-white p-7 rounded-2xl border flex flex-col`}
+                      ? "scale-100 opacity-100 shadow-lg shadow-primary-900/10 border-primary/30"
+                      : "scale-95 opacity-50 border-border"
+                  } bg-background p-7 rounded-3xl border flex flex-col`}
                 >
                   <div
-                    className={`h-12 w-12 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 ${
+                    className={`h-12 w-12 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ${
                       isActive ? "bg-primary text-white scale-110" : "bg-primary/10 text-primary"
                     }`}
                   >
                     <IconComponent size={24} />
                   </div>
-                  <h4 className="text-lg font-heading font-bold text-gray-900 mb-2">
+                  <h4 className="text-lg font-heading font-bold text-foreground mb-2">
                     {program.title}
                   </h4>
-                  <p className="text-gray-600 mb-6 text-sm leading-relaxed flex-grow">
+                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed flex-grow">
                     {program.desc}
                   </p>
                   <Link

@@ -350,7 +350,7 @@ export default function ApplyPageClient() {
 
   if (submitted) {
     return (
-      <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 md:p-12 text-center max-w-xl mx-auto space-y-6 animate-fade-in">
+      <div className="bg-background rounded-3xl shadow-2xl border border-border p-8 md:p-12 text-center max-w-xl mx-auto space-y-6 animate-fade-in">
         <div className="mx-auto w-16 h-16 rounded-full bg-green-50 flex items-center justify-center text-green-500 mb-2 shadow-sm">
           <CheckCircle size={40} className="animate-bounce" />
         </div>
@@ -396,7 +396,7 @@ export default function ApplyPageClient() {
   return (
     <>
       {stateMenu}
-      <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col lg:flex-row min-h-[600px] w-full max-w-4xl mx-auto">
+      <div className="bg-background rounded-3xl shadow-2xl border border-border overflow-hidden flex flex-col lg:flex-row min-h-[600px] w-full max-w-4xl mx-auto">
       
       {/* Sidebar Progress Steps */}
       <div className="lg:w-1/3 bg-gradient-to-b from-[#0f1e36] to-[#050c18] text-white p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800 relative">
@@ -479,7 +479,7 @@ export default function ApplyPageClient() {
       </div>
 
       {/* Main Form Fields Panel */}
-      <div className="lg:w-2/3 p-8 md:p-10 flex flex-col justify-between min-w-0 bg-white">
+      <div className="lg:w-2/3 p-8 md:p-10 flex flex-col justify-between min-w-0 bg-background">
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-between gap-8 min-h-0">
           
           <div className="lg:overflow-y-auto lg:max-h-[440px] pr-1 lg:pr-2 space-y-6">
@@ -880,7 +880,7 @@ export default function ApplyPageClient() {
           </div>
 
           {submitError && (
-            <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-650 font-semibold animate-fade-in shrink-0">
+            <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-semibold animate-fade-in shrink-0">
               {submitError}
             </div>
           )}
