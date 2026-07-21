@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
@@ -138,11 +139,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable}`}>
+      <head>
+        {/* Preconnect to GiveButter CDN so TCP/TLS is ready before user navigates to /donate */}
+        <link rel="preconnect" href="https://widgets.givebutter.com" />
+        <link rel="dns-prefetch" href="https://widgets.givebutter.com" />
+        <link rel="preconnect" href="https://cdn.givebutter.com" />
+        <link rel="dns-prefetch" href="https://cdn.givebutter.com" />
+        {/* Preconnect to Zeffy so TCP/TLS is ready before user navigates to /shop */}
+        <link rel="preconnect" href="https://www.zeffy.com" />
+        <link rel="dns-prefetch" href="https://www.zeffy.com" />
+        <link rel="preconnect" href="https://cdn.zeffy.com" />
+        <link rel="dns-prefetch" href="https://cdn.zeffy.com" />
+        {/* Prefetch the exact Zeffy iframe document so the HTML is already cached */}
+        <link rel="prefetch" href="https://www.zeffy.com/embed/ticketing/resourceful-impact-in-scholastic-educations-shop" as="document" />
+      </head>
       <body className="antialiased min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        {/* Load GiveButter globally so the web component is fully registered and cached before navigating to /donate */}
+        <Script
+          id="givebutter-widget"
+          src="https://widgets.givebutter.com/latest.umd.cjs?acct=vlGShfXkMTiyIoYg&p=other"
+          strategy="afterInteractive"
+        />
+        {/* Hidden prerender for widgets to force the browser to execute their internal iframes and cache everything */}
+        <div style={{ display: 'none' }} aria-hidden="true">
+          {/* @ts-expect-error */}
+          <givebutter-widget id="LeZ9Nv"></givebutter-widget>
+          <iframe src="https://www.zeffy.com/embed/ticketing/resourceful-impact-in-scholastic-educations-shop" />
+        </div>
         <Navbar />
         <main className="flex flex-1 min-h-0 flex-col">
           {children}
