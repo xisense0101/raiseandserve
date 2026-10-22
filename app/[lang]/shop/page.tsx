@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { preconnect } from "react-dom";
 import CloudinaryImage from "@/components/media/CloudinaryImage";
 import ZeffyShop from "@/components/shop/ZeffyShop";
 import { hasLocale, localizePath, type Locale } from "@/lib/i18n/config";
@@ -18,6 +19,7 @@ export default async function ShopPage({ params }: PageProps<"/[lang]/shop">) {
   const { lang: raw } = await params;
   const lang: Locale = hasLocale(raw) ? raw : "en";
   const t = pageCopy.shop(lang);
+  preconnect("https://www.zeffy.com");
   const team = photo("b88e24d2-9931-4b77-9bdb-fb749e08d9c8");
 
   return (

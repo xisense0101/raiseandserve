@@ -1,11 +1,8 @@
 import Link from "next/link";
-import Script from "next/script";
-import { Suspense } from "react";
 import { Check, Info } from "lucide-react";
-import GivebutterWidget from "@/components/donate/GivebutterWidget";
+import GivebutterForm from "@/components/donate/GivebutterForm";
 import CloudinaryImage from "@/components/media/CloudinaryImage";
 import PlayCard from "@/components/media/PlayCard";
-import { GIVEBUTTER_SCRIPT_ID, GIVEBUTTER_SCRIPT_SRC } from "@/lib/givebutter";
 import { hasLocale, localizePath, type Locale } from "@/lib/i18n/config";
 import { pageCopy } from "@/lib/i18n/pages";
 import { photo, playable, video } from "@/lib/media";
@@ -31,10 +28,6 @@ export default async function DonatePage({ params }: PageProps<"/[lang]/donate">
 
   return (
     <div className="flex flex-col gap-20 pb-24 md:gap-24">
-      {/* Same id as the idle-loaded script in the layout: next/script loads it once.
-          Here it is needed right away, for visitors who land on /donate directly. */}
-      <Script id={GIVEBUTTER_SCRIPT_ID} src={GIVEBUTTER_SCRIPT_SRC} strategy="afterInteractive" />
-
       {/* ─── Film + widget side by side (handoff 1f) ─── */}
       <section className="mx-auto grid w-full max-w-site items-start gap-10 px-4 pt-8 sm:px-6 md:pt-12 lg:grid-cols-[1fr_440px]">
         <div className="flex flex-col gap-5">
@@ -55,10 +48,8 @@ export default async function DonatePage({ params }: PageProps<"/[lang]/donate">
         </div>
 
         <div className="flex flex-col gap-3 lg:sticky lg:top-24">
-          <div className="min-h-[520px] rounded-soft-lg bg-surface p-3 shadow-lg sm:p-4">
-            <Suspense fallback={<p className="p-6 text-sm text-neutral-700">{t.widgetLoading}</p>}>
-              <GivebutterWidget />
-            </Suspense>
+          <div className="rounded-soft-lg bg-surface p-3 shadow-lg sm:p-4">
+            <GivebutterForm loadingLabel={t.widgetLoading} />
           </div>
           <details className="group rounded-soft-lg bg-neutral-100 px-5 py-4 text-sm">
             <summary className="flex cursor-pointer list-none items-center gap-2 font-semibold text-ink [&::-webkit-details-marker]:hidden">

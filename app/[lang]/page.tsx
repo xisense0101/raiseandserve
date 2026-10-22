@@ -45,7 +45,8 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   preload(HERO_MEDIA.widePoster, { as: "image", fetchPriority: "high", media: "(min-width: 768px)" });
   preload(HERO_MEDIA.tallPoster, { as: "image", fetchPriority: "high", media: "(max-width: 767px)" });
 
-  const whyRise = playable(video("why-rise"), lang);
+  // The produced RISE reel: clear voice-over explaining who RISE is and what it does.
+  const reel = playable(video("reel"), lang);
   const campaign = playable(videoFor("campaign", lang), lang);
   const partner = playable(video("jennifer-murphy"), lang);
 
@@ -60,7 +61,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
           <HeroMedia />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-neutral-900)_35%,transparent)_0%,color-mix(in_srgb,var(--color-neutral-900)_55%,transparent)_45%,color-mix(in_srgb,var(--color-neutral-900)_85%,transparent)_100%)]" />
           <div className="absolute top-4 left-4 z-10 md:top-[22px] md:left-[22px]">
-            <PlayBadge video={whyRise} label={t.heroBadge} />
+            <PlayBadge video={reel} label={t.heroBadge} />
           </div>
           <div className="relative flex w-full flex-wrap items-end justify-between gap-8 px-5 pt-24 pb-6 sm:px-8 md:px-10 md:pt-[88px] md:pb-10">
             <div className="flex max-w-[560px] flex-col gap-4">

@@ -38,8 +38,8 @@ const home = {
       link: "See the July 20 pantry fill",
       cards: [
         { title: "Food on pantry shelves", body: "Canned goods, peanut butter and weekend food bags for CIS families." },
-        { title: "Hygiene kits & clothing", body: "Hygiene kits, clothing and new shoes for the school closet." },
-        { title: "School supplies & more", body: "Shelves filled for the school year across about 70 CIS schools." },
+        { title: "Hygiene kits", body: "Soap, shampoo, toothpaste and personal care items, sorted for students." },
+        { title: "New shoes & clothing", body: "A stocked clothing closet for students across about 70 CIS schools." },
       ],
     },
     partner: {
@@ -92,8 +92,8 @@ const home = {
       link: "Ver la despensa del 20 de julio",
       cards: [
         { title: "Comida en las despensas", body: "Enlatados, crema de cacahuate y bolsas de comida para el fin de semana." },
-        { title: "Higiene y ropa", body: "Kits de higiene, ropa y zapatos nuevos para el armario escolar." },
-        { title: "Útiles escolares y más", body: "Estantes llenos para el año escolar en unas 70 escuelas de CIS." },
+        { title: "Kits de higiene", body: "Jabón, champú, pasta de dientes y artículos de cuidado personal para estudiantes." },
+        { title: "Zapatos nuevos y ropa", body: "Un armario de ropa lleno para estudiantes de unas 70 escuelas de CIS." },
       ],
     },
     partner: {

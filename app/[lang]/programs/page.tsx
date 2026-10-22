@@ -21,7 +21,7 @@ const MEDIA: ({ loop: string } | { photo: string })[] = [
   { photo: "d1c2fc82-65b2-4edc-bce8-e8c10bc51380" },
   { photo: "6087bf8f-23f8-4403-a028-ee495a026cec" },
   { photo: "IMG_8172" },
-  { loop: "closet" },
+  { loop: "filling-shelves" },
 ];
 
 const COLORS = ["bg-accent", "bg-accent-2", "bg-accent-700", "bg-accent-2-700"];

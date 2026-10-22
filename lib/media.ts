@@ -22,7 +22,7 @@ import {
  * e31b44c2, fe39cef1, b9c43023_2, IMG_8177), close-ups of the CIS donor wall
  * (IMG_8182–IMG_8186), the DJ business-card graphic (IMG_8002), outtakes
  * (IMG_7906, IMG_7912, IMG_8157), the channel outro card (IMG_7956), the
- * unrelated spoken-word clip (IMG_8079) and low-rated b-roll
+ * unrelated spoken-word clip (IMG_8079), IMG_8209 (poor audio) and low-rated b-roll
  * (IMG_7891, IMG_7907, IMG_7911, IMG_7919, IMG_8003, IMG_8155, IMG_8163).
  *
  * Clips titled "Moments from July 20" were placed by timestamp but not
@@ -252,8 +252,6 @@ const VIDEO_LIST: Video[] = [
     title: { en: "Ivy Beesley, CIS Greater Tarrant County", es: "Ivy Beesley, CIS Greater Tarrant County" } },
   { slug: "jennifer-murphy", file: "IMG_8200", width: 1080, height: 1920, duration: 33, kind: "film", album: PANTRY, posterAt: 3, lang: "en",
     title: { en: "Jennifer Murphy, CIS Greater Tarrant County", es: "Jennifer Murphy, CIS Greater Tarrant County" } },
-  { slug: "why-rise", file: "IMG_8209", width: 1080, height: 1920, duration: 27, kind: "film", album: PANTRY, posterAt: 2, lang: "en",
-    title: { en: "Filling shelves for the school year", es: "Llenando estantes para el año escolar" } },
   { slug: "thank-you", file: "IMG_8213", width: 2160, height: 3840, duration: 5, kind: "clip", album: PANTRY, posterAt: 1, lang: "en",
     title: { en: "“This is what we were able to do today”", es: "“Esto es lo que logramos hoy”" } },
   { slug: "filling-shelves", file: "IMG_8212", width: 2160, height: 3840, duration: 7, kind: "clip", album: PANTRY, posterAt: 2, lang: "en",

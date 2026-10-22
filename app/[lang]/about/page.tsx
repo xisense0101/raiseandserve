@@ -25,15 +25,14 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
   const t = pageCopy.about(lang);
   const href = (h: string) => localizePath(lang, h);
 
-  const reel = playable(video("reel"), lang);
+  const story = playable(video("story-take-1"), lang);
   const sean = playable(video("sean-taylor"), lang);
-  const jennifer = playable(video("jennifer-thanks"), lang);
   const team = photo("97c0a3f7-aee3-4122-892d-40f381018279");
   const crew = photo("724e9e18-e981-4ca2-87fd-2ee824f17746");
 
   return (
     <div className="flex flex-col gap-20 pb-24 md:gap-28">
-      {/* ─── Intro: headline left, the RISE reel right ─── */}
+      {/* ─── Intro: headline left, the RISE story film right ─── */}
       <section className="mx-auto grid w-full max-w-site items-center gap-12 px-4 pt-8 sm:px-6 md:pt-14 lg:grid-cols-[1fr_360px]">
         <div className="flex flex-col gap-6">
           <span className="tag-accent self-start">{t.kicker}</span>
@@ -42,7 +41,7 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
         </div>
         <div className="relative mx-auto w-full max-w-[300px] lg:max-w-none">
           <div aria-hidden className="absolute -inset-3 -z-10 rotate-3 rounded-[999px_999px_28px_28px] bg-accent-2-300" />
-          <PlayCard video={reel} label={t.filmLabel} priority className="rounded-[999px_999px_28px_28px]" />
+          <PlayCard video={story} label={t.filmLabel} priority className="rounded-[999px_999px_28px_28px]" />
         </div>
       </section>
 
@@ -127,10 +126,6 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
               </article>
             );
           })}
-        </div>
-        <div className="grid items-center gap-6 rounded-soft-lg border-[1.5px] border-divider p-5 sm:grid-cols-[170px_1fr] sm:p-6">
-          <PlayCard video={jennifer} size="sm" className="mx-auto max-w-[170px]" />
-          <p className="m-0 font-heading text-xl leading-snug text-pretty">{jennifer.title}</p>
         </div>
       </section>
 

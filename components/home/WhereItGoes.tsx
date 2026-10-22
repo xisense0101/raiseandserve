@@ -5,8 +5,8 @@ import { localizePath } from "@/lib/i18n/config";
 import { pageCopy } from "@/lib/i18n/pages";
 import { loopSources } from "@/lib/media";
 
-// Order matches the copy cards: pantry shelves, hygiene table, volunteers filling shelves.
-const LOOP_SLUGS = ["pantry-shelves", "hygiene-table", "filling-shelves"] as const;
+// Order matches the copy cards: pantry shelves, hygiene table, the shoe and clothing closet.
+const LOOP_SLUGS = ["pantry-shelves", "hygiene-table", "closet"] as const;
 
 /** Three muted 4:5 loops from the July 20 pantry fill (hi-fi section 4). */
 export default function WhereItGoes({ lang, showLink = true }: { lang: Locale; showLink?: boolean }) {

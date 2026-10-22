@@ -54,7 +54,7 @@ export const EVENTS: RiseEvent[] = [
     zeffy: "2st-event",
     flyer: "/event-cis.jpg",
     album: "2026-07-20-pantry-fill",
-    film: "story-take-1",
+    film: "jennifer-thanks",
     photos: ["IMG_8176", "IMG_8191", "IMG_8195"],
   },
 ];

@@ -5,7 +5,7 @@ import { locales, localizePath, persistLocale, stripLocale, type Locale } from "
 import { cn } from "@/lib/utils";
 import { useLocale } from "./LocaleProvider";
 
-/** EN/ES pill toggle. The choice is stored in a cookie that proxy.ts honours. */
+/** EN/ES pill toggle. The choice is stored in a cookie that the redirects in next.config.ts honour. */
 export function LanguageSwitch({ className }: { className?: string }) {
   const { lang, dict } = useLocale();
   const pathname = usePathname();
@@ -15,7 +15,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
   const choose = (event: React.MouseEvent<HTMLAnchorElement>, next: Locale) => {
     event.preventDefault();
     if (next === lang) return;
-    // Write the cookie before navigating so the proxy doesn't bounce us back.
+    // Write the cookie before navigating so the locale redirect doesn't bounce us back.
     persistLocale(next);
     const { search, hash } = window.location;
     router.push(`${localizePath(next, basePath)}${search}${hash}`, { scroll: false });

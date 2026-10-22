@@ -1,16 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { Caprasimo, Figtree } from "next/font/google";
 import { notFound } from "next/navigation";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import IntentWarmup from "@/components/perf/IntentWarmup";
 import ScrollToTop from "@/components/ScrollToTop";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
 import { VideoModalProvider } from "@/components/media/VideoModal";
-import { GIVEBUTTER_SCRIPT_ID, GIVEBUTTER_SCRIPT_SRC } from "@/lib/givebutter";
 import { hasLocale, locales } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import {
@@ -170,10 +169,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   return (
     <html lang={lang} className={`${caprasimo.variable} ${figtree.variable}`}>
       <head>
-        {/* Warm up Givebutter so /donate opens instantly */}
-        <link rel="preconnect" href="https://widgets.givebutter.com" />
-        <link rel="preconnect" href="https://cdn.givebutter.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
+        {/* DNS for the donation form and the shop, so their iframes start sooner. */}
+        <link rel="dns-prefetch" href="https://givebutter.com" />
+        <link rel="dns-prefetch" href="https://givebuttercdn.com" />
+        <link rel="dns-prefetch" href="https://js.stripe.com" />
         <link rel="dns-prefetch" href="https://www.zeffy.com" />
       </head>
       <body className="flex min-h-screen flex-col bg-page text-ink antialiased">
@@ -187,13 +187,6 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        {/* Register the Givebutter web component once the browser is idle, so it is
-            cached before a visitor reaches /donate without competing with page load. */}
-        <Script
-          id={GIVEBUTTER_SCRIPT_ID}
-          src={GIVEBUTTER_SCRIPT_SRC}
-          strategy="lazyOnload"
-        />
         <LocaleProvider lang={lang}>
           <VideoModalProvider>
             <Navbar />
@@ -202,6 +195,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             </main>
             <Footer lang={lang} />
             <ScrollToTop />
+            <IntentWarmup />
           </VideoModalProvider>
         </LocaleProvider>
         <Analytics />
