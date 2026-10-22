@@ -6,47 +6,47 @@
      Source of truth for the redesign — retune here.
      ════════════════════════════════════════════════════════════════════ */
 
-  /* Ground, surface, ink */
-  --color-page: #f5ead8;
-  --color-surface: #ebddc5;
-  --color-ink: #201e1d;
-  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+  /* Ground, surface, ink — blue & white theme built on the logo blue (#0b83d6) */
+  --color-page: #f7fafd;
+  --color-surface: #e8f2fb;
+  --color-ink: #0d2238;
+  --color-divider: color-mix(in srgb, #0d2238 16%, transparent);
 
-  /* Accent (terracotta). Use accent-800+ or white for text on accent fills;
-     accent on page is only 3:1 — never use it for body text. */
-  --color-accent: #c67139;
-  --color-accent-100: #fff2eb;
-  --color-accent-200: #ffe1d0;
-  --color-accent-300: #ffc6a5;
-  --color-accent-400: #f6a06b;
-  --color-accent-500: #d67f48;
-  --color-accent-600: #b2622d;
-  --color-accent-700: #8c491a;
-  --color-accent-800: #643312;
-  --color-accent-900: #402310;
+  /* Accent (logo blue). The base is a shade deeper than the logo so white
+     button labels stay readable (4.8:1). Use accent-700+ for text on page. */
+  --color-accent: #0a78c4;
+  --color-accent-100: #eaf4fc;
+  --color-accent-200: #d0e7f8;
+  --color-accent-300: #a7d2f2;
+  --color-accent-400: #6ab3e9;
+  --color-accent-500: #2b93de;
+  --color-accent-600: #0866a8;
+  --color-accent-700: #075589;
+  --color-accent-800: #08436b;
+  --color-accent-900: #0a304d;
 
-  /* Accent 2 (sage) */
-  --color-accent-2: #7a8a5e;
-  --color-accent-2-100: #f0fae1;
-  --color-accent-2-200: #e1eecc;
-  --color-accent-2-300: #ccdbb2;
-  --color-accent-2-400: #aebf92;
-  --color-accent-2-500: #8fa073;
-  --color-accent-2-600: #728157;
-  --color-accent-2-700: #56633f;
-  --color-accent-2-800: #3d472b;
-  --color-accent-2-900: #272e1b;
+  /* Accent 2 (light sky blue) */
+  --color-accent-2: #3f8fc2;
+  --color-accent-2-100: #eef7fc;
+  --color-accent-2-200: #dbeef9;
+  --color-accent-2-300: #bfe0f3;
+  --color-accent-2-400: #93c9e8;
+  --color-accent-2-500: #66afd9;
+  --color-accent-2-600: #3a86b6;
+  --color-accent-2-700: #2b6d96;
+  --color-accent-2-800: #1f5476;
+  --color-accent-2-900: #163d57;
 
-  /* Warm neutral ramp (replaces Tailwind's neutral) */
-  --color-neutral-100: #f9f4ed;
-  --color-neutral-200: #eee7db;
-  --color-neutral-300: #dcd3c4;
-  --color-neutral-400: #c0b6a5;
-  --color-neutral-500: #a19786;
-  --color-neutral-600: #82796a;
-  --color-neutral-700: #645c50;
-  --color-neutral-800: #474238;
-  --color-neutral-900: #2e2b25;
+  /* Cool neutral ramp (replaces Tailwind's neutral) */
+  --color-neutral-100: #f4f8fb;
+  --color-neutral-200: #e6edf3;
+  --color-neutral-300: #d3dde7;
+  --color-neutral-400: #b1c0ce;
+  --color-neutral-500: #8899ab;
+  --color-neutral-600: #66778a;
+  --color-neutral-700: #4b5b6d;
+  --color-neutral-800: #334252;
+  --color-neutral-900: #1c2a38;
 
   /* Type — next/font variables are set on <html> in app/[lang]/layout.tsx */
   --font-heading: var(--font-caprasimo), ui-serif, Georgia, serif;
@@ -59,9 +59,9 @@
   --radius-soft-lg: 28px;
 
   /* Elevation — ink-tinted, soft */
-  --shadow-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
-  --shadow-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
-  --shadow-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #1c2a38 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #1c2a38 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #1c2a38 22%, transparent);
 
   /* Layout */
   --container-site: 1200px;
@@ -70,30 +70,30 @@
      Pages not yet redesigned still use the old names. They now resolve to
      the Organic palette so the whole site shares one look. Remove once every
      page is rebuilt (build order steps 2–7). */
-  --color-primary: #8c491a;
-  --color-primary-dark: #643312;
-  --color-primary-light: #fff2eb;
-  --color-primary-50: #fff7f2;
-  --color-primary-100: #fff2eb;
-  --color-primary-200: #ffe1d0;
-  --color-primary-300: #ffc6a5;
-  --color-primary-400: #f6a06b;
-  --color-primary-500: #d67f48;
-  --color-primary-600: #b2622d;
-  --color-primary-700: #8c491a;
-  --color-primary-800: #643312;
-  --color-primary-900: #402310;
-  --color-secondary: #56633f;
-  --color-accent-50: #fff7f2;
-  --color-accent-hover: #b2622d;
-  --color-signal: #7a8a5e;
-  --color-signal-light: #f0fae1;
-  --color-signal-dark: #56633f;
-  --color-background: #f5ead8;
-  --color-foreground: #201e1d;
-  --color-muted: #ebddc5;
-  --color-muted-foreground: #645c50;
-  --color-border: #dcd3c4;
+  --color-primary: #075589;
+  --color-primary-dark: #08436b;
+  --color-primary-light: #eaf4fc;
+  --color-primary-50: #f4f9fe;
+  --color-primary-100: #eaf4fc;
+  --color-primary-200: #d0e7f8;
+  --color-primary-300: #a7d2f2;
+  --color-primary-400: #6ab3e9;
+  --color-primary-500: #2b93de;
+  --color-primary-600: #0866a8;
+  --color-primary-700: #075589;
+  --color-primary-800: #08436b;
+  --color-primary-900: #0a304d;
+  --color-secondary: #2b6d96;
+  --color-accent-50: #f4f9fe;
+  --color-accent-hover: #0866a8;
+  --color-signal: #3f8fc2;
+  --color-signal-light: #eef7fc;
+  --color-signal-dark: #2b6d96;
+  --color-background: #f7fafd;
+  --color-foreground: #0d2238;
+  --color-muted: #e8f2fb;
+  --color-muted-foreground: #4b5b6d;
+  --color-border: #d3dde7;
 }
 
 @layer base {
