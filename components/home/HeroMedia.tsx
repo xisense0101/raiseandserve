@@ -36,8 +36,9 @@ export default function HeroMedia() {
         <img
           src={HERO_MEDIA.tallPoster}
           alt=""
+          // LCP image: found by the browser's preload scanner straight from the HTML.
+          // (No preload() hint: it leaks into link prefetches and loads on every page.)
           fetchPriority="high"
-          decoding="async"
           className="washed absolute inset-0 size-full object-cover"
         />
       </picture>

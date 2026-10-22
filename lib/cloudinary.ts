@@ -52,6 +52,15 @@ export const loopTx = (seconds: number) =>
   `so_0,eo_${seconds}/ac_none/c_fill,ar_4:5,w_540/q_auto:eco`;
 export const LOOP_POSTER_TX = "so_1/c_fill,ar_4:5,w_540/q_auto";
 
+/**
+ * Seamless version for clips whose first and last frames differ (handheld
+ * footage): plays seconds 1 → end, and over the final second fades the clip's
+ * opening second in on top, so the last frame lands on the first one (source
+ * second 1, which is also the poster frame). Output is (end - 1) seconds long.
+ */
+export const crossfadeLoopTx = (publicId: string, end: number) =>
+  `eo_${end},so_1/l_video:${publicId.replaceAll("/", ":")}/eo_1,so_0/e_fade:1000/fl_layer_apply,so_${end - 2}/ac_none/c_fill,ar_4:5,w_540/q_auto:eco`;
+
 export function cldVideoUrl(publicId: string, tx: string, ext: "mp4" | "jpg") {
   return `${BASE}/video/upload/${tx}/${publicId}.${ext}`;
 }

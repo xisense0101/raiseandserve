@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { preload } from "react-dom";
 import GiveBox from "@/components/home/GiveBox";
 import HeroMedia from "@/components/home/HeroMedia";
 import MobileGiveBar from "@/components/home/MobileGiveBar";
@@ -7,7 +6,6 @@ import WhereItGoes from "@/components/home/WhereItGoes";
 import CloudinaryImage from "@/components/media/CloudinaryImage";
 import PlayBadge from "@/components/media/PlayBadge";
 import PlayCard from "@/components/media/PlayCard";
-import { HERO_MEDIA } from "@/lib/cloudinary";
 import { hasLocale, localizePath, type Locale } from "@/lib/i18n/config";
 import { pageCopy } from "@/lib/i18n/pages";
 import { photo, playable, video, videoFor } from "@/lib/media";
@@ -41,9 +39,6 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const t = pageCopy.home(lang);
   const href = (h: string) => localizePath(lang, h);
 
-  // The hero poster is the LCP element: fetch the right crop for each screen first.
-  preload(HERO_MEDIA.widePoster, { as: "image", fetchPriority: "high", media: "(min-width: 768px)" });
-  preload(HERO_MEDIA.tallPoster, { as: "image", fetchPriority: "high", media: "(max-width: 767px)" });
 
   // The produced RISE reel: clear voice-over explaining who RISE is and what it does.
   const reel = playable(video("reel"), lang);

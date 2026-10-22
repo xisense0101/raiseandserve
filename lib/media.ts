@@ -4,6 +4,7 @@ import {
   LOOP_POSTER_TX,
   cldVideoUrl,
   filmPosterTx,
+  crossfadeLoopTx,
   loopTx,
 } from "@/lib/cloudinary";
 
@@ -321,22 +322,30 @@ export function playable(v: Video, lang: Locale): PlayableVideo {
 }
 
 /** Muted 4:5 card loops. */
-export type LoopSpec = { slug: string; seconds: number };
+/** seconds: trim length. crossfade: clip end (s) for a seamless crossfade loop instead of a hard cut. */
+export type LoopSpec = { slug: string; seconds: number; crossfade?: number };
 
 export const LOOPS: Record<string, LoopSpec> = {
   "pantry-shelves": { slug: "pantry-shelves", seconds: 8 },
   "hygiene-table": { slug: "hygiene-table", seconds: 8 },
   "thank-you": { slug: "thank-you", seconds: 4 },
   "filling-shelves": { slug: "filling-shelves", seconds: 7 },
-  "closet": { slug: "closet", seconds: 4 },
+  // Handheld pan: a straight 4 s cut jumps back visibly, so it crossfades into its own start.
+  "closet": { slug: "closet", seconds: 3.5, crossfade: 4.5 },
   "doors-open": { slug: "doors-open", seconds: 8 },
 };
+
+export function loopTransform(spec: LoopSpec) {
+  return spec.crossfade
+    ? crossfadeLoopTx(videoPublicId(video(spec.slug)), spec.crossfade)
+    : loopTx(spec.seconds);
+}
 
 export function loopSources(slug: keyof typeof LOOPS) {
   const spec = LOOPS[slug];
   const id = videoPublicId(video(spec.slug));
   return {
-    src: cldVideoUrl(id, loopTx(spec.seconds), "mp4"),
+    src: cldVideoUrl(id, loopTransform(spec), "mp4"),
     poster: cldVideoUrl(id, LOOP_POSTER_TX, "jpg"),
   };
 }

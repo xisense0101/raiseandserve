@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { GIVEBUTTER_BOOT_SCRIPT, GIVEBUTTER_FRAME_ID } from "@/lib/givebutter";
+import { GIVEBUTTER_FRAME_ID, GIVEBUTTER_SRC_SCRIPT, givebutterFormUrl } from "@/lib/givebutter";
 import { cn } from "@/lib/utils";
 
 const ORIGIN = "https://givebutter.com";
@@ -11,27 +11,27 @@ const INIT = `${SIZER}${GIVEBUTTER_FRAME_ID}:8:false:false:32:true:true:null:bod
 const NOT_SIZE = new Set(["message", "scrollTo", "scrollToOffset", "pageInfo", "pageInfoStop", "inPageLink", "close", "reset", "mouseenter", "mouseleave"]);
 
 /**
- * The Givebutter form iframe. The server HTML carries a tiny inline script that
- * creates the iframe while the page is still parsing; after hydration this
- * component only resizes it to fit and fades out the placeholder.
+ * The Givebutter form iframe. React renders the iframe without a src; a tiny
+ * inline script right after it sets the src while the page is still parsing,
+ * so the form downloads in parallel with our own JavaScript. After hydration
+ * this component only resizes the iframe to fit and fades out the placeholder.
+ *
+ * Don't move the iframe into dangerouslySetInnerHTML: React resets that HTML on
+ * hydration, which deletes the loading form.
  */
 export default function GivebutterForm({ loadingLabel }: { loadingLabel: string }) {
-  const slot = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLIFrameElement>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const host = slot.current;
-    if (!host) return;
-
-    // Client-side navigation: React inserts the HTML without running the inline
-    // script, so run it now (a created <script> does execute).
-    if (!host.querySelector("iframe")) {
-      const boot = document.createElement("script");
-      boot.textContent = GIVEBUTTER_BOOT_SCRIPT;
-      host.appendChild(boot);
-    }
-    const frame = host.querySelector("iframe");
+    const frame = ref.current;
     if (!frame) return;
+
+    // Client-side navigation: React does not run the inline script, so set the src here.
+    if (!frame.getAttribute("src")) {
+      const q = new URLSearchParams(location.search);
+      frame.src = givebutterFormUrl(q.get("amount"), q.get("frequency"));
+    }
 
     let fallback: ReturnType<typeof setTimeout> | undefined;
     const sendInit = () => frame.contentWindow?.postMessage(INIT, ORIGIN);
@@ -70,12 +70,17 @@ export default function GivebutterForm({ loadingLabel }: { loadingLabel: string 
 
   return (
     <div className="relative min-h-[560px]">
-      <div
-        ref={slot}
-        // Server HTML runs this script while parsing; React leaves the subtree alone.
-        dangerouslySetInnerHTML={{ __html: `<script>${GIVEBUTTER_BOOT_SCRIPT}</script>` }}
+      <iframe
+        ref={ref}
+        id={GIVEBUTTER_FRAME_ID}
+        name="givebutter"
+        title="Donation form"
+        allow="payment"
+        // The inline script adds src and data-loaded before hydration; React must not touch them.
         suppressHydrationWarning
+        className="block h-[680px] w-full border-0 bg-transparent"
       />
+      <script dangerouslySetInnerHTML={{ __html: GIVEBUTTER_SRC_SCRIPT }} />
       <FormSkeleton label={loadingLabel} hidden={ready} />
     </div>
   );

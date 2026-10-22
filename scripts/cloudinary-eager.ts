@@ -16,9 +16,8 @@ import {
   HERO_TX,
   LOOP_POSTER_TX,
   filmPosterTx,
-  loopTx,
 } from "../lib/cloudinary";
-import { LOOPS, VIDEOS, video, videoPublicId } from "../lib/media";
+import { LOOPS, VIDEOS, loopTransform, video, videoPublicId } from "../lib/media";
 
 type Job = { publicId: string; eager: string[] };
 
@@ -43,7 +42,7 @@ function eagerJobs(): Job[] {
   }
 
   for (const spec of Object.values(LOOPS)) {
-    add(videoPublicId(video(spec.slug)), `${loopTx(spec.seconds)}/mp4`, `${LOOP_POSTER_TX}/jpg`);
+    add(videoPublicId(video(spec.slug)), `${loopTransform(spec)}/mp4`, `${LOOP_POSTER_TX}/jpg`);
   }
 
   return [...jobs].map(([publicId, eager]) => ({ publicId, eager: [...eager] }));
