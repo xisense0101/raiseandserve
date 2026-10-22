@@ -20,7 +20,7 @@ npm run dev
 | Fonts | `app/[lang]/layout.tsx` | Self-hosted with `next/font` (no Google request at runtime). |
 | Languages | `proxy.ts`, `lib/i18n/*` | English at `/about`, Spanish at `/es/about`. Every page is prerendered for both. The EN/ES toggle stores a `NEXT_LOCALE` cookie; first-time visitors whose browser prefers Spanish land on `/es`. Server components use `getDictionary(lang)`, client components use `useLocale()`. |
 | Navbar / Footer | `components/layout/*` | Nav items live in `lib/site.ts`. |
-| Bot protection | `components/security/Turnstile.tsx`, `lib/turnstile.ts` | Every form sends a Cloudflare Turnstile token; every `/api/*` route verifies it before doing anything. In production a missing secret rejects submissions (fail closed). |
+| Bot protection | `components/security/Turnstile.tsx`, `lib/turnstile.ts` | Every form sends a Cloudflare Turnstile token; every `/api/*` route verifies it before doing anything. Without the real keys (local dev, previews) Cloudflare test keys are used: forms work, but unprotected. |
 | Media catalog | `lib/media.ts` | Every photo (alt text, album) and video (event, aspect, poster frame) in Cloudinary cloud `nc7sref5`. Albums were sorted by camera timestamps: IMG_7891–8005 + UUID JPGs = July 6 meal, IMG_8155–8237 = July 20 CIS pantry fill. |
 | Media delivery | `lib/cloudinary.ts`, `components/media/*` | URL builders, a `next/image` loader (Cloudinary resizes, AVIF/WebP), `LoopVideo` (muted, loads only near the viewport, poster-only for reduced motion / Save-Data), `PlayCard` + one shared `VideoModal`. |
 | Pre-generated video | `scripts/cloudinary-eager.ts` | All derived videos/posters are eager-generated so nobody waits on a transcode. Re-run `npx tsx scripts/cloudinary-eager.ts --run` after changing a transformation or adding a video. |
@@ -30,6 +30,6 @@ npm run dev
 
 See `.env.example`. Set the same values in Vercel → Project → Settings → Environment Variables.
 
-- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` — Cloudflare dashboard → Turnstile → add a widget (Managed) for `riseandserve.org`, `www.riseandserve.org`, your Vercel preview domain and `localhost`.
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` — Production only. The widget allows `riseandserve.org` and `www.riseandserve.org`; previews and local dev fall back to test keys automatically.
 - `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` — Cloudinary console → Dashboard.
 - `RESEND_*` — email delivery for the forms.

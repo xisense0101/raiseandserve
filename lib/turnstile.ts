@@ -1,5 +1,6 @@
 import "server-only";
 import type { TurnstileAction } from "./turnstile-actions";
+import { TURNSTILE_TEST_SECRET_KEY } from "./turnstile-config";
 
 /**
  * Cloudflare Turnstile server-side verification.
@@ -11,6 +12,19 @@ import type { TurnstileAction } from "./turnstile-actions";
 
 const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
+/**
+ * Use the real secret only when both real keys are configured. A real secret
+ * rejects the test widget's dummy token, so pairing a real secret with the
+ * test site key would break every form.
+ */
+function resolveSecret(): string {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (secret && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) return secret;
+  if (process.env.VERCEL_ENV === "production") {
+    console.warn("[turnstile] Real keys are not fully configured; using Cloudflare test keys (no bot protection).");
+  }
+  return TURNSTILE_TEST_SECRET_KEY;
+}
 
 type SiteverifyResponse = {
   success: boolean;
@@ -33,17 +47,7 @@ export async function verifyTurnstile(
   ip: string,
   expectedAction: TurnstileAction,
 ): Promise<TurnstileResult> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-
-  if (!secret) {
-    // Fail closed in production; let local development work without keys.
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[turnstile] TURNSTILE_SECRET_KEY is not set; skipping verification in development.");
-      return { ok: true };
-    }
-    console.error("[turnstile] TURNSTILE_SECRET_KEY is not set; rejecting submission.");
-    return { ok: false, status: 503, error: "Form verification is temporarily unavailable. Please try again later." };
-  }
+  const secret = resolveSecret();
 
   if (typeof token !== "string" || token.length === 0 || token.length > 2048) {
     return FAILED;

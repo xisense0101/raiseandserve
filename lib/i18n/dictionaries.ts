@@ -53,7 +53,6 @@ const en = {
   verification: {
     checking: "Checking that you're human…",
     failed: "Verification failed. Please refresh the page and try again.",
-    notConfigured: "Form verification is not configured.",
   },
 };
 
@@ -108,7 +107,6 @@ const es: Dictionary = {
   verification: {
     checking: "Verificando que eres humano…",
     failed: "No se pudo verificar. Actualiza la página e inténtalo de nuevo.",
-    notConfigured: "La verificación del formulario no está configurada.",
   },
 };
 

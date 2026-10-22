@@ -4,6 +4,7 @@ import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "reac
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 import type { TurnstileAction } from "@/lib/turnstile-actions";
+import { TURNSTILE_SITE_KEY as SITE_KEY } from "@/lib/turnstile-config";
 
 /**
  * Cloudflare Turnstile widget (managed, "interaction-only": invisible for
@@ -15,7 +16,6 @@ import type { TurnstileAction } from "@/lib/turnstile-actions";
  */
 
 const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 type RenderOptions = {
   sitekey: string;
@@ -83,23 +83,12 @@ export default function Turnstile({ action, onToken, ref, className }: Props) {
     reset() {
       onTokenRef.current(null);
       if (window.turnstile && widgetId.current) window.turnstile.reset(widgetId.current);
-      else if (!SITE_KEY) onTokenRef.current("dev-no-turnstile");
     },
   }));
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-
-    if (!SITE_KEY) {
-      if (process.env.NODE_ENV !== "production") {
-        // Local development without keys: the API also skips verification.
-        onTokenRef.current("dev-no-turnstile");
-      } else {
-        console.error("[turnstile] NEXT_PUBLIC_TURNSTILE_SITE_KEY is not set");
-      }
-      return;
-    }
 
     let cancelled = false;
     const mount = () => {
@@ -147,13 +136,7 @@ export default function Turnstile({ action, onToken, ref, className }: Props) {
   }, [action, lang]);
 
   const message =
-    !SITE_KEY && process.env.NODE_ENV === "production"
-      ? dict.verification.notConfigured
-      : status === "error"
-        ? dict.verification.failed
-        : status === "idle" && SITE_KEY
-          ? dict.verification.checking
-          : null;
+    status === "error" ? dict.verification.failed : status === "idle" ? dict.verification.checking : null;
 
   return (
     <div className={cn("flex flex-col gap-1", className)}>
