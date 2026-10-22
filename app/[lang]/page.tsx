@@ -43,7 +43,8 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   // The produced RISE reel: clear voice-over explaining who RISE is and what it does.
   const reel = playable(video("reel"), lang);
   const campaign = playable(videoFor("campaign", lang), lang);
-  const partner = playable(video("jennifer-murphy"), lang);
+  // Edited take with captions (IMG_2553); the raw take IMG_8200 stays in the July 20 album.
+  const partner = playable(video("jennifer-thanks"), lang);
 
   return (
     <div className="flex flex-col gap-20 pb-24 md:gap-24">
