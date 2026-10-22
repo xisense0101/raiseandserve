@@ -1,16 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Globe,
-  GraduationCap,
-  Heart,
-  Sprout,
-  Users,
-  Award,
-  BookOpen,
-  CheckCircle2,
-} from "lucide-react";
+import { Check } from "lucide-react";
+import CloudinaryImage from "@/components/media/CloudinaryImage";
+import PlayCard from "@/components/media/PlayCard";
+import { hasLocale, localizePath, type Locale } from "@/lib/i18n/config";
+import { pageCopy } from "@/lib/i18n/pages";
+import { photo, playable, video } from "@/lib/media";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
@@ -21,283 +16,150 @@ export const metadata = createMetadata({
   keywords: ["about RISE", "nonprofit mission", "community empowerment", "education nonprofit"],
 });
 
-const VALUES = [
-  {
-    icon: <Globe size={22} />,
-    title: "Inclusivity",
-    desc: "We value inclusivity and aim to provide access to resources for all individuals, regardless of their background or circumstances. Every person deserves a seat at the table.",
-  },
-  {
-    icon: <GraduationCap size={22} />,
-    title: "Commitment to Education",
-    desc: "RISE is dedicated to promoting education as a pathway to success and believes in the importance of continuous learning and growth for every member of our community.",
-  },
-  {
-    icon: <Sprout size={22} />,
-    title: "Giving Back",
-    desc: "RISE encourages individuals to give back to their communities and support others on their journey to success, creating a lasting cycle of empowerment.",
-  },
-  {
-    icon: <Heart size={22} />,
-    title: "Compassion",
-    desc: "Every initiative we run is rooted in genuine compassion. We show up with kindness and dignity for every person who walks through our doors.",
-  },
-  {
-    icon: <Users size={22} />,
-    title: "Community First",
-    desc: "Our community is our priority. We listen, we adapt, and we serve — meeting people where they are and building trust through consistent action.",
-  },
-  {
-    icon: <Award size={22} />,
-    title: "Excellence",
-    desc: "We hold ourselves to the highest standard in everything we do, from community feeding programs to academic workshops and career development events.",
-  },
-];
+// One photo per partner card, in the same order as the copy: CIS, then Catfish King.
+const PARTNER_PHOTOS = ["IMG_8181", "IMG_7998"];
 
+export default async function AboutPage({ params }: PageProps<"/[lang]/about">) {
+  const { lang: raw } = await params;
+  const lang: Locale = hasLocale(raw) ? raw : "en";
+  const t = pageCopy.about(lang);
+  const href = (h: string) => localizePath(lang, h);
 
+  const reel = playable(video("reel"), lang);
+  const sean = playable(video("sean-taylor"), lang);
+  const jennifer = playable(video("jennifer-thanks"), lang);
+  const team = photo("97c0a3f7-aee3-4122-892d-40f381018279");
+  const crew = photo("724e9e18-e981-4ca2-87fd-2ee824f17746");
 
-export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen w-full bg-background">
-
-      {/* ─── Hero ─── */}
-      <section
-        className="relative w-full overflow-hidden bg-primary-900"
-        style={{ height: "calc(100vh - 80px)", minHeight: 560 }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=2000&q=80')",
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-          }}
-        />
-        <div className="absolute inset-0 bg-primary-900/70" />
-        <div className="absolute inset-0 bg-primary/10" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/3 pointer-events-none" />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-center text-center space-y-6">
-          <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent bg-accent/10 border border-accent/30 px-4 py-1.5 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            Our Story
-          </span>
-          <h1 className="text-4xl md:text-6xl font-heading font-bold text-white leading-[1.15] text-balance">
-            From the Dinner Table{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-200">
-              to the Boardroom.
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/75 max-w-2xl mx-auto leading-relaxed">
-            RISE empowers individuals through community feeding, career development, accessible education, and essential support for our neighbors in our community.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link
-              href="/donate"
-              className="px-8 py-4 rounded-full font-bold text-primary-dark bg-accent hover:bg-accent-hover transition-all shadow-lg hover:-translate-y-1 duration-200"
-            >
-              Make a Donation
-            </Link>
-            <Link
-              href="/volunteer"
-              className="px-8 py-4 rounded-full font-bold text-white border-2 border-white/30 hover:bg-white/10 transition-all hover:-translate-y-1 duration-200 flex items-center gap-2"
-            >
-              Volunteer With Us <ArrowRight size={18} />
-            </Link>
-          </div>
+    <div className="flex flex-col gap-20 pb-24 md:gap-28">
+      {/* ─── Intro: headline left, the RISE reel right ─── */}
+      <section className="mx-auto grid w-full max-w-site items-center gap-12 px-4 pt-8 sm:px-6 md:pt-14 lg:grid-cols-[1fr_360px]">
+        <div className="flex flex-col gap-6">
+          <span className="tag-accent self-start">{t.kicker}</span>
+          <h1 className="m-0 max-w-[720px] text-[clamp(40px,6.4vw,76px)] leading-[0.98]">{t.title}</h1>
+          <p className="m-0 max-w-[600px] text-lg leading-relaxed text-pretty text-neutral-800">{t.intro}</p>
+        </div>
+        <div className="relative mx-auto w-full max-w-[300px] lg:max-w-none">
+          <div aria-hidden className="absolute -inset-3 -z-10 rotate-3 rounded-[999px_999px_28px_28px] bg-accent-2-300" />
+          <PlayCard video={reel} label={t.filmLabel} priority className="rounded-[999px_999px_28px_28px]" />
         </div>
       </section>
 
-      {/* ─── Leadership — Tony Favors (first, right after hero) ─── */}
-      <section className="py-24 bg-[#fff8eb] overflow-hidden relative -mt-12">
-        <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16 space-y-3">
-            <h3 className="text-primary font-bold tracking-widest uppercase text-sm">Our Leadership</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">Meet the Visionary Behind RISE</h2>
+      {/* ─── Who we are ─── */}
+      <section className="mx-auto grid w-full max-w-site items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
+        <div className="relative grid grid-cols-[1.25fr_1fr] items-end gap-4">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-soft-lg">
+            <CloudinaryImage publicId={team.publicId} alt={team.alt} fill sizes="(min-width: 1024px) 320px, 55vw" className="washed object-cover" />
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Photo */}
-            <div className="relative flex justify-center lg:justify-start">
-              <div className="relative w-full max-w-md">
-                <div className="absolute -top-4 -left-4 w-full h-full rounded-3xl border-2 border-primary/20" />
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/15 aspect-[3/4]">
-                  <Image
-                    src="/about-tony.jpeg"
-                    alt="Toney Favors — Chief Innovation Officer, RISE"
-                    fill
-                    sizes="(min-width: 1024px) 420px, 100vw"
-                    className="object-cover object-top"
-                    priority
-                  />
-                </div>
-                {/* Badge */}
-                <div className="absolute -bottom-6 -right-6 bg-primary text-white px-6 py-4 rounded-2xl shadow-xl shadow-primary/30 text-center">
-                  <p className="text-xs text-primary-light font-medium uppercase tracking-wider">Chief Innovation</p>
-                  <p className="font-heading font-bold text-base">Officer</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Bio */}
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-1">Toney Favors</h3>
-                <p className="text-accent font-semibold text-lg">Chief Innovation Officer & Founder</p>
-              </div>
-
-              <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-                <p>
-                  Toney Favors is the visionary founder and Chief Innovation Officer of RISE, driven by an unwavering belief that every individual regardless of their circumstances deserves access to the tools, resources, and support needed to thrive.
-                </p>
-                <p>
-                  With a deep-rooted passion for education and community empowerment, Toney established RISE in September 2023 to bridge the gap between need and opportunity for communities that need support. Under his leadership, RISE has grown from a grassroots initiative to a thriving nonprofit impacting thousands of lives annually.
-                </p>
-                <p>
-                  Toney believes that real change begins at the dinner table and extends all the way to the boardroom and every step in between is an opportunity to lift someone up. His hands-on approach and compassionate leadership style set the tone for everything RISE stands for.
-                </p>
-              </div>
-
-              <Link
-                href="/contact"
-                className="inline-flex items-center font-semibold text-primary hover:text-primary-dark transition-colors group"
-              >
-                Get in Touch With Toney
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+          <div className="relative mb-10 aspect-[2/3] overflow-hidden rounded-[28px_28px_999px_999px]">
+            <CloudinaryImage publicId={crew.publicId} alt={crew.alt} fill sizes="(min-width: 1024px) 240px, 40vw" className="washed object-cover" />
           </div>
+        </div>
+        <div className="flex flex-col gap-5">
+          <h2 className="m-0 text-[clamp(30px,4vw,44px)]">{t.missionTitle}</h2>
+          {t.mission.map((para) => (
+            <p key={para} className="m-0 text-[17px] leading-relaxed text-pretty text-neutral-800">
+              {para}
+            </p>
+          ))}
+          <ul className="m-0 mt-2 grid list-none gap-3 p-0 sm:grid-cols-2">
+            {t.missionPoints.map((point) => (
+              <li key={point} className="flex items-start gap-2.5 text-[15px] font-semibold">
+                <span className="mt-0.5 grid size-6 flex-none place-items-center rounded-full bg-accent text-white">
+                  <Check aria-hidden className="size-3.5" strokeWidth={3} />
+                </span>
+                {point}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ─── Who We Are / Mission ─── */}
-      <section className="py-24 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Text */}
-            <div className="space-y-8">
+      {/* ─── Leadership ─── */}
+      <section className="mx-auto flex w-full max-w-site flex-col gap-8 px-4 sm:px-6">
+        <h2 className="m-0 text-[clamp(28px,3.6vw,40px)]">{t.leadershipTitle}</h2>
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <article className="grid gap-6 rounded-soft-lg bg-surface p-6 sm:grid-cols-[220px_1fr] sm:p-8">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[999px_999px_28px_28px] bg-neutral-300">
+              <Image src="/about-tony.jpeg" alt={t.founder.name} fill sizes="220px" className="object-cover" />
+            </div>
+            <div className="flex flex-col gap-3">
               <div>
-                <h3 className="text-primary font-bold tracking-widest uppercase text-sm mb-3 flex items-center gap-2">
-                  <span className="w-8 h-0.5 bg-primary rounded-full" />
-                  Who We Are
-                </h3>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground leading-tight">
-                  Building a Stronger Community Through Education &amp; Service.
-                </h2>
+                <h3 className="m-0 text-[28px]">{t.founder.name}</h3>
+                <p className="m-0 mt-1 text-sm font-bold tracking-wide text-accent-700 uppercase">{t.founder.role}</p>
               </div>
-
-              <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-                <p>
-                  Resourceful Impact in Scholastic Education (RISE) is committed to empowering individuals to excel academically and professionally. We believe that true impact happens when we address the immediate needs of our community from food security and clothing to education and career readiness.
+              {t.founder.bio.map((para) => (
+                <p key={para} className="m-0 text-[15px] leading-relaxed text-neutral-800">
+                  {para}
                 </p>
-                <p>
-                  Our dedicated team collaborates with academic organizations, local restaurants, volunteers, and donors to connect people with vital resources, guidance, and opportunities while fostering a lifelong culture of giving back.
-                </p>
-              </div>
-
-              <ul className="space-y-3">
-                {[
-                  "Workshops, seminars, and community service events",
-                  "Partnership with local food banks and restaurants",
-                  "Career mentorship and talent pipeline programs",
-                  "Educational resources for all backgrounds",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-foreground">
-                    <CheckCircle2 className="text-primary h-5 w-5 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              ))}
             </div>
-
-            {/* Image */}
-            <div className="relative group rounded-3xl overflow-hidden aspect-square sm:aspect-[4/3] lg:aspect-square w-full min-h-[300px] bg-muted shadow-2xl shadow-primary/10">
-              <Image
-                src="/add-image-3.png"
-                alt="RISE team and community outreach"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="absolute inset-0 object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/75 via-gray-900/15 to-transparent z-10" />
-              <div className="absolute bottom-6 left-6 right-6 z-20">
-                <p className="text-white font-medium text-base leading-snug drop-shadow-md">
-                  RISE volunteers serving neighbors at a community feeding event.
-                </p>
+          </article>
+          <article className="grid grid-cols-[120px_1fr] items-center gap-5 rounded-soft-lg bg-accent-2-100 p-6 sm:grid-cols-[150px_1fr] sm:p-8">
+            <PlayCard video={sean} tone="sage" size="sm" />
+            <div className="flex flex-col gap-3">
+              <blockquote className="m-0 font-heading text-xl leading-snug text-pretty text-accent-2-900">“{t.board.quote}”</blockquote>
+              <div className="flex flex-col">
+                <b>{t.board.name}</b>
+                <span className="text-sm text-accent-2-800">{t.board.role}</span>
               </div>
             </div>
-          </div>
+          </article>
+        </div>
+      </section>
+
+      {/* ─── Partners ─── */}
+      <section className="mx-auto flex w-full max-w-site flex-col gap-8 px-4 sm:px-6">
+        <h2 className="m-0 text-[clamp(28px,3.6vw,40px)]">{t.partnersTitle}</h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {t.partners.map((partner, i) => {
+            const p = photo(PARTNER_PHOTOS[i]);
+            return (
+              <article key={partner.name} className="flex flex-col overflow-hidden rounded-soft-lg bg-surface">
+                <div className="relative aspect-[16/9]">
+                  <CloudinaryImage publicId={p.publicId} alt={p.alt} fill sizes="(min-width: 768px) 580px, 100vw" className="washed object-cover" />
+                </div>
+                <div className="flex flex-col gap-2 p-6">
+                  <h3 className="m-0 text-[22px]">{partner.name}</h3>
+                  <p className="m-0 text-[15px] leading-relaxed text-neutral-800">{partner.body}</p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <div className="grid items-center gap-6 rounded-soft-lg border-[1.5px] border-divider p-5 sm:grid-cols-[170px_1fr] sm:p-6">
+          <PlayCard video={jennifer} size="sm" className="mx-auto max-w-[170px]" />
+          <p className="m-0 font-heading text-xl leading-snug text-pretty">{jennifer.title}</p>
         </div>
       </section>
 
       {/* ─── Values ─── */}
-      <section className="py-24 bg-muted">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 space-y-3">
-            <h3 className="text-primary font-bold tracking-widest uppercase text-sm">What We Stand For</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-              Overcoming Challenges With Our True Values
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Our values aren&apos;t just words on a wall — they&apos;re the principles that guide every decision, every event, and every interaction we have.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
-            {VALUES.map((val, i) => (
-              <div
-                key={i}
-                className="group bg-background border border-border rounded-3xl p-7 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 hover-sheen"
-              >
-                <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                  {val.icon}
-                </div>
-                <h4 className="text-lg font-heading font-bold text-foreground mb-3">{val.title}</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed">{val.desc}</p>
-              </div>
+      <section className="mx-auto w-full max-w-site px-4 sm:px-6">
+        <div className="flex flex-col gap-10 rounded-soft-lg bg-ink p-6 text-page sm:p-11">
+          <h2 className="m-0 text-[clamp(28px,3.6vw,40px)] text-page">{t.valuesTitle}</h2>
+          <ol className="m-0 grid list-none gap-x-10 gap-y-8 p-0 sm:grid-cols-2 lg:grid-cols-3">
+            {t.values.map((v, i) => (
+              <li key={v.title} className="flex flex-col gap-2 border-t border-neutral-700 pt-5">
+                <span className="font-heading text-sm text-accent-300">0{i + 1}</span>
+                <b className="font-heading text-[22px] font-normal">{v.title}</b>
+                <span className="text-[15px] leading-relaxed text-neutral-300">{v.body}</span>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* ─── Call to Action ─── */}
-      <section className="py-24 bg-muted">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-primary-900 rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
-            <div
-              className="absolute inset-0 opacity-20"
-              style={{ backgroundImage: "radial-gradient(#007ED1 2px, transparent 2px)", backgroundSize: "30px 30px" }}
-            />
-            <div className="absolute -top-16 -right-16 w-56 h-56 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative z-10 space-y-8">
-              <BookOpen className="mx-auto h-14 w-14 text-accent" />
-              <h2 className="text-3xl md:text-5xl font-heading font-bold text-white text-balance max-w-2xl mx-auto">
-                Join Us in Making a Lasting Impact.
-              </h2>
-              <p className="text-lg text-white/70 max-w-xl mx-auto">
-                Whether you choose to donate to our programs or volunteer your time at our next event, your contribution matters more than you know.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <Link
-                  href="/donate"
-                  className="w-full sm:w-auto px-8 py-4 bg-accent hover:bg-accent-hover text-white rounded-full text-lg font-bold transition-all shadow-lg hover:-translate-y-1"
-                >
-                  Make a Donation
-                </Link>
-                <Link
-                  href="/volunteer"
-                  className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full text-lg font-bold transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
-                >
-                  Volunteer With Us <ArrowRight size={20} />
-                </Link>
-              </div>
-            </div>
-          </div>
+      {/* ─── CTA ─── */}
+      <section className="mx-auto flex w-full max-w-site flex-col items-center gap-6 px-4 text-center sm:px-6">
+        <h2 className="m-0 max-w-[720px] text-[clamp(28px,3.8vw,44px)]">{t.cta}</h2>
+        <div className="flex flex-wrap justify-center gap-2.5">
+          <Link href={href("/donate")} className="btn-primary px-7 py-3.5 text-base">
+            {lang === "es" ? "Donar" : "Donate"}
+          </Link>
+          <Link href={href("/events")} className="btn-secondary px-6 py-3 text-base">
+            {lang === "es" ? "Ver eventos" : "See events"}
+          </Link>
         </div>
       </section>
     </div>

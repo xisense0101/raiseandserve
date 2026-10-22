@@ -2,20 +2,17 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type NavKey = keyof Pick<
   Dictionary["nav"],
-  "about" | "programs" | "events" | "gallery" | "getInvolved"
+  "about" | "programs" | "events" | "gallery" | "getInvolved" | "shop"
 >;
 
-/**
- * Primary navigation (IA from the redesign handoff).
- * Routes that are not built yet are bridged by temporary redirects in
- * next.config.ts; flip `ready` once the page ships.
- */
+/** Primary navigation (IA from the redesign handoff, plus the Zeffy shop). */
 export const NAV_LINKS: { key: NavKey; href: string; ready: boolean }[] = [
   { key: "about", href: "/about", ready: true },
   { key: "programs", href: "/programs", ready: true },
   { key: "events", href: "/events", ready: true },
   { key: "gallery", href: "/gallery", ready: true },
   { key: "getInvolved", href: "/get-involved", ready: true },
+  { key: "shop", href: "/shop", ready: true },
 ];
 
 export const PROGRAM_LINKS: { key: keyof Dictionary["programs"]; href: string }[] = [

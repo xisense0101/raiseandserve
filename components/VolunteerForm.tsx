@@ -13,15 +13,15 @@ interface EventOption {
 const EVENTS_LIST: EventOption[] = [
   {
     id: "catfish",
-    name: "RISE Catfish King Event",
-    date: "Upcoming Outreach",
+    name: "Next RISE community meal",
+    date: "Date coming soon",
   },
 ];
 
 const HELP_OPTIONS = [
   "Food serving — distributing plates to guests",
   "Guest welcome & check-in at the entrance",
-  "Event setup — arriving at 3:00 PM to prepare",
+  "Event setup — arriving early to prepare",
   "Surface cleanup after the event",
   "Photography / social media coverage",
   "Anywhere I'm needed — flexible",
@@ -62,8 +62,8 @@ export default function VolunteerForm() {
         ? prev.filter((item) => item !== eventName)
         : [...prev, eventName];
       
-      // If we deselect Catfish King Event, clear the help options
-      if (eventName === "RISE Catfish King Event" && isSelected) {
+      // If we deselect the community meal, clear the help options
+      if (eventName === "Next RISE community meal" && isSelected) {
         setHelpOptions([]);
       }
       return next;
@@ -94,9 +94,9 @@ export default function VolunteerForm() {
       return;
     }
 
-    const hasCatfishEvent = selectedEvents.includes("RISE Catfish King Event");
+    const hasCatfishEvent = selectedEvents.includes("Next RISE community meal");
     if (hasCatfishEvent && helpOptions.length === 0) {
-      setError("Please select at least one way you would like to help for the RISE Catfish King Event.");
+      setError("Please select at least one way you would like to help for the Next RISE community meal.");
       return;
     }
 
@@ -142,12 +142,12 @@ export default function VolunteerForm() {
 
   if (submitted) {
     return (
-      <div className="bg-green-50/50 border border-green-200 rounded-3xl p-8 md:p-12 text-center space-y-6 animate-fade-in max-w-2xl mx-auto shadow-sm">
-        <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-600 shadow-inner">
+      <div className="bg-accent-2-100/50 border border-accent-2-200 rounded-soft-lg p-8 md:p-12 text-center space-y-6 animate-fade-in max-w-2xl mx-auto shadow-sm">
+        <div className="mx-auto w-16 h-16 rounded-full bg-accent-2-100 flex items-center justify-center text-accent-2-600 shadow-inner">
           <CheckCircle2 size={32} className="animate-bounce" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-heading font-black text-slate-900">Application Submitted!</h3>
+          <h3 className="text-2xl font-heading font-black text-ink">Application Submitted!</h3>
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-md mx-auto">
             Thank you for applying to volunteer with RISE! We have received your details, and a coordinator will connect with you soon regarding the upcoming events.
           </p>
@@ -155,7 +155,7 @@ export default function VolunteerForm() {
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="inline-flex items-center gap-2 px-6 py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-sm transition-all shadow-md hover:shadow-green-700/25 cursor-pointer"
+          className="inline-flex items-center gap-2 px-6 py-3.5 bg-accent-2-600 hover:bg-accent-2-700 text-white font-bold rounded-soft text-sm transition-all shadow-md hover:shadow-green-700/25 cursor-pointer"
         >
           Submit Another Application
         </button>
@@ -163,26 +163,26 @@ export default function VolunteerForm() {
     );
   }
 
-  const showHelpOptions = selectedEvents.includes("RISE Catfish King Event");
+  const showHelpOptions = selectedEvents.includes("Next RISE community meal");
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-3xl mx-auto">
       {error && (
-        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700 font-semibold animate-fade-in">
+        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-soft text-sm text-red-700 font-semibold animate-fade-in">
           <AlertCircle size={18} className="shrink-0 text-red-500 mt-0.5" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Section 1: Contact Details */}
-      <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm space-y-6">
-        <h3 className="text-lg md:text-xl font-heading font-bold text-slate-900 border-b border-slate-100 pb-3">
+      <div className="bg-page rounded-soft-lg p-6 md:p-8 border border-neutral-300 shadow-sm space-y-6">
+        <h3 className="text-lg md:text-xl font-heading font-bold text-ink border-b border-neutral-300 pb-3">
           1. Contact Information
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">Name *</label>
+            <label className="block text-sm font-semibold text-neutral-700">Name *</label>
             <input
               type="text"
               name="fullName"
@@ -190,12 +190,12 @@ export default function VolunteerForm() {
               onChange={handleInputChange}
               required
               disabled={isSubmitting}
-              className="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-gray-800 bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              className="w-full px-5 py-3.5 rounded-soft border border-neutral-300 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-ink bg-page disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
               placeholder="Your full name"
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">Email *</label>
+            <label className="block text-sm font-semibold text-neutral-700">Email *</label>
             <input
               type="email"
               name="email"
@@ -203,7 +203,7 @@ export default function VolunteerForm() {
               onChange={handleInputChange}
               required
               disabled={isSubmitting}
-              className="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-gray-800 bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              className="w-full px-5 py-3.5 rounded-soft border border-neutral-300 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-ink bg-page disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
               placeholder="Your email address"
             />
           </div>
@@ -211,29 +211,29 @@ export default function VolunteerForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">Phone number</label>
+            <label className="block text-sm font-semibold text-neutral-700">Phone number</label>
             <input
               type="tel"
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
               disabled={isSubmitting}
-              className="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-gray-800 bg-white disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              className="w-full px-5 py-3.5 rounded-soft border border-neutral-300 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-ink bg-page disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
               placeholder="(000) 000-0000"
             />
           </div>
           
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">Have you volunteered with RISE before? *</label>
+            <label className="block text-sm font-semibold text-neutral-700">Have you volunteered with RISE before? *</label>
             <div className="grid grid-cols-2 gap-4">
               <button
                 type="button"
                 onClick={() => handleVolunteeredChange("Yes")}
                 disabled={isSubmitting}
-                className={`py-3.5 rounded-xl border text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-3.5 rounded-soft border text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   formData.volunteeredBefore === "Yes"
                     ? "bg-primary text-white border-primary shadow-md shadow-primary/15"
-                    : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                    : "bg-page text-neutral-700 border-neutral-300 hover:bg-neutral-100"
                 }`}
               >
                 {formData.volunteeredBefore === "Yes" && <Check size={16} />}
@@ -243,10 +243,10 @@ export default function VolunteerForm() {
                 type="button"
                 onClick={() => handleVolunteeredChange("No")}
                 disabled={isSubmitting}
-                className={`py-3.5 rounded-xl border text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-3.5 rounded-soft border text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   formData.volunteeredBefore === "No"
                     ? "bg-primary text-white border-primary shadow-md shadow-primary/15"
-                    : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                    : "bg-page text-neutral-700 border-neutral-300 hover:bg-neutral-100"
                 }`}
               >
                 {formData.volunteeredBefore === "No" && <Check size={16} />}
@@ -258,12 +258,12 @@ export default function VolunteerForm() {
       </div>
 
       {/* Section 2: Event Selection */}
-      <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm space-y-6">
-        <div className="border-b border-slate-100 pb-3">
-          <h3 className="text-lg md:text-xl font-heading font-bold text-slate-900">
+      <div className="bg-page rounded-soft-lg p-6 md:p-8 border border-neutral-300 shadow-sm space-y-6">
+        <div className="border-b border-neutral-300 pb-3">
+          <h3 className="text-lg md:text-xl font-heading font-bold text-ink">
             2. Select Events to Support *
           </h3>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-neutral-500 mt-1">
             Choose the upcoming event you would like to participate in.
           </p>
         </div>
@@ -277,15 +277,15 @@ export default function VolunteerForm() {
                 type="button"
                 onClick={() => toggleEvent(event.name)}
                 disabled={isSubmitting}
-                className={`p-6 rounded-2xl border text-left flex flex-col justify-between transition-all group relative cursor-pointer max-w-md w-full ${
+                className={`p-6 rounded-soft border text-left flex flex-col justify-between transition-all group relative cursor-pointer max-w-md w-full ${
                   isSelected
                     ? "bg-primary/5 border-primary shadow-md"
-                    : "bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50/50"
+                    : "bg-page border-neutral-300 hover:border-neutral-300 hover:bg-neutral-100/50"
                 }`}
               >
                 <div className="space-y-2 w-full">
                   <div className="flex justify-between items-start">
-                    <span className={`p-2 rounded-lg ${isSelected ? 'bg-primary text-white' : 'bg-slate-100 text-slate-500'} transition-all`}>
+                    <span className={`p-2 rounded-soft-sm ${isSelected ? 'bg-primary text-white' : 'bg-neutral-100 text-neutral-500'} transition-all`}>
                       <Calendar size={16} />
                     </span>
                     {isSelected && (
@@ -294,10 +294,10 @@ export default function VolunteerForm() {
                       </span>
                     )}
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm md:text-base leading-tight mt-3">
+                  <h4 className="font-bold text-ink text-sm md:text-base leading-tight mt-3">
                     {event.name}
                   </h4>
-                  <p className="text-xs text-slate-500 font-medium">
+                  <p className="text-xs text-neutral-500 font-medium">
                     {event.date}
                   </p>
                 </div>
@@ -309,14 +309,14 @@ export default function VolunteerForm() {
 
       {/* Section 3: Conditional Catfish Help Options */}
       {showHelpOptions && (
-        <div className="bg-slate-50/60 rounded-3xl p-6 md:p-8 border border-primary/10 shadow-sm space-y-6 animate-fade-up">
+        <div className="bg-neutral-100/60 rounded-soft-lg p-6 md:p-8 border border-primary/10 shadow-sm space-y-6 animate-fade-up">
           <div className="border-b border-primary/10 pb-3">
-            <h3 className="text-lg md:text-xl font-heading font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-lg md:text-xl font-heading font-bold text-ink flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
               How would you like to help? *
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
-              Select all tasks that match your interest and availability for the <strong>RISE Catfish King Event</strong>.
+            <p className="text-xs text-neutral-500 mt-1">
+              Select all tasks that match your interest and availability for the <strong>Next RISE community meal</strong>.
             </p>
           </div>
 
@@ -329,14 +329,14 @@ export default function VolunteerForm() {
                   type="button"
                   onClick={() => toggleHelpOption(option)}
                   disabled={isSubmitting}
-                  className={`p-4 rounded-xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
+                  className={`p-4 rounded-soft border text-left flex items-start gap-3 transition-all cursor-pointer ${
                     isChecked
-                      ? "bg-white border-primary shadow-sm text-slate-900"
-                      : "bg-white/50 border-slate-200 text-muted-foreground hover:bg-white hover:border-slate-350"
+                      ? "bg-page border-primary shadow-sm text-ink"
+                      : "bg-page/50 border-neutral-300 text-muted-foreground hover:bg-page hover:border-neutral-350"
                   }`}
                 >
                   <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 shrink-0 transition-all ${
-                    isChecked ? "bg-primary border-primary text-white" : "bg-white border-slate-300"
+                    isChecked ? "bg-primary border-primary text-white" : "bg-page border-neutral-300"
                   }`}>
                     {isChecked && <Check size={12} strokeWidth={3} />}
                   </div>
@@ -356,7 +356,7 @@ export default function VolunteerForm() {
       <button
         type="submit"
         disabled={isSubmitting || !turnstileToken}
-        className="w-full group px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-xl text-lg font-bold transition-all shadow-lg hover:shadow-primary/30 flex items-center justify-center gap-2 disabled:bg-primary/75 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full group px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-soft text-lg font-bold transition-all shadow-lg hover:shadow-primary/30 flex items-center justify-center gap-2 disabled:bg-primary/75 disabled:cursor-not-allowed cursor-pointer"
       >
         {isSubmitting ? (
           <>

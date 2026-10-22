@@ -22,8 +22,7 @@ import {
  * e31b44c2, fe39cef1, b9c43023_2, IMG_8177), close-ups of the CIS donor wall
  * (IMG_8182–IMG_8186), the DJ business-card graphic (IMG_8002), outtakes
  * (IMG_7906, IMG_7912, IMG_8157), the channel outro card (IMG_7956), the
- * unrelated spoken-word clip (IMG_8079), the take-1 cut of the recap film
- * (IMG_4260), a second Jennifer Murphy take (IMG_2553) and low-rated b-roll
+ * unrelated spoken-word clip (IMG_8079) and low-rated b-roll
  * (IMG_7891, IMG_7907, IMG_7911, IMG_7919, IMG_8003, IMG_8155, IMG_8163).
  *
  * Clips titled "Moments from July 20" were placed by timestamp but not
@@ -225,6 +224,10 @@ const VIDEO_LIST: Video[] = [
     title: { en: "Two events, one community", es: "Dos eventos, una comunidad" } },
   { slug: "reel", file: "Reel", width: 1080, height: 1920, duration: 97, kind: "film", album: "story", posterAt: 3, lang: "en",
     title: { en: "Why we rise", es: "Por qué nos levantamos" } },
+  { slug: "story-take-1", file: "IMG_4260", width: 1080, height: 1920, duration: 107, kind: "film", album: "story", posterAt: 3, lang: "en",
+    title: { en: "Every journey begins with a single act of support", es: "Cada camino empieza con un acto de apoyo" } },
+  { slug: "jennifer-thanks", file: "IMG_2553", width: 1080, height: 1920, duration: 37, kind: "film", album: "story", posterAt: 3, lang: "en",
+    title: { en: "A thank-you from CIS Greater Tarrant County", es: "Un agradecimiento de CIS Greater Tarrant County" } },
   { slug: "sean-taylor", file: "AfterChanges", width: 1080, height: 1920, duration: 57, kind: "film", album: "story", posterAt: 2, lang: "en",
     title: { en: "Sean Taylor, RISE board member", es: "Sean Taylor, miembro de la junta de RISE" } },
 
@@ -319,13 +322,16 @@ export function playable(v: Video, lang: Locale): PlayableVideo {
   };
 }
 
-/** Muted 4:5 card loops ("Where your gift goes"). */
+/** Muted 4:5 card loops. */
 export type LoopSpec = { slug: string; seconds: number };
 
 export const LOOPS: Record<string, LoopSpec> = {
   "pantry-shelves": { slug: "pantry-shelves", seconds: 8 },
   "hygiene-table": { slug: "hygiene-table", seconds: 8 },
   "thank-you": { slug: "thank-you", seconds: 4 },
+  "filling-shelves": { slug: "filling-shelves", seconds: 7 },
+  "closet": { slug: "closet", seconds: 4 },
+  "doors-open": { slug: "doors-open", seconds: 8 },
 };
 
 export function loopSources(slug: keyof typeof LOOPS) {

@@ -34,7 +34,7 @@ export default function MobileGiveBar({ watchId }: { watchId: string }) {
         <Link href={localizePath(lang, "/donate")} tabIndex={visible ? 0 : -1} className="btn-primary py-3 text-base">
           {dict.nav.donate}
         </Link>
-        <Link href={localizePath(lang, "/volunteer")} tabIndex={visible ? 0 : -1} className="btn-secondary bg-page py-3 text-base">
+        <Link href={localizePath(lang, "/get-involved?tab=volunteer")} tabIndex={visible ? 0 : -1} className="btn-secondary bg-page py-3 text-base">
           {dict.nav.volunteer}
         </Link>
       </div>

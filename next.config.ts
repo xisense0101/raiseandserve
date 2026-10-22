@@ -10,17 +10,16 @@ const securityHeaders = [
 ];
 
 /**
- * Routes from the new IA that are not built yet point at today's pages.
- * Temporary (307) so nothing is cached; swap for the real pages per build order:
- *   /programs     → step 7 (Programs page)
- *   /get-involved → step 7 (tabs: volunteer / apply / partner / shop)
+ * Old URLs from before the redesign, kept alive for links and search results.
+ * Permanent (308) now that the new pages have shipped.
  */
-const interimRedirects = [
-  { from: "/programs", to: "/services" },
-  { from: "/get-involved", to: "/volunteer" },
+const legacyRedirects = [
+  { from: "/services", to: "/programs" },
+  { from: "/volunteer", to: "/get-involved?tab=volunteer" },
+  { from: "/apply", to: "/get-involved?tab=apply" },
 ].flatMap(({ from, to }) => [
-  { source: from, destination: to, permanent: false },
-  { source: `/es${from}`, destination: `/es${to}`, permanent: false },
+  { source: from, destination: to, permanent: true },
+  { source: `/es${from}`, destination: `/es${to}`, permanent: true },
 ]);
 
 const nextConfig: NextConfig = {
@@ -33,7 +32,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [new URL("https://res.cloudinary.com/**")],
   },
   async redirects() {
-    return interimRedirects;
+    return legacyRedirects;
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

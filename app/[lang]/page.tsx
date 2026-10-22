@@ -30,7 +30,7 @@ const EVENT_ALBUMS = ["/gallery/2026-07-06-community-meal", "/gallery/2026-07-20
 // Organic shapes from the hi-fi gallery strip: first card arched on top, last arched below.
 const STRIP = [
   { id: "e2866917-2a36-48e2-a42a-9f5ec2608c76", shape: "rounded-[999px_999px_28px_28px]" },
-  { id: "6087bf8f-23f8-4403-a028-ee495a026cec", shape: "rounded-soft-lg" },
+  { id: "1fd6a3c1-274b-4cf5-ad16-29e72fa993ee", shape: "rounded-soft-lg" },
   { id: "IMG_8193", shape: "rounded-soft-lg" },
   { id: "c5e72c79-2aa2-4716-8225-a9bd069ca90e", shape: "rounded-[28px_28px_999px_999px]" },
 ];
@@ -45,7 +45,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   preload(HERO_MEDIA.widePoster, { as: "image", fetchPriority: "high", media: "(min-width: 768px)" });
   preload(HERO_MEDIA.tallPoster, { as: "image", fetchPriority: "high", media: "(max-width: 767px)" });
 
-  const reel = playable(video("reel"), lang);
+  const whyRise = playable(video("why-rise"), lang);
   const campaign = playable(videoFor("campaign", lang), lang);
   const partner = playable(video("jennifer-murphy"), lang);
 
@@ -60,7 +60,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
           <HeroMedia />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-neutral-900)_35%,transparent)_0%,color-mix(in_srgb,var(--color-neutral-900)_55%,transparent)_45%,color-mix(in_srgb,var(--color-neutral-900)_85%,transparent)_100%)]" />
           <div className="absolute top-4 left-4 z-10 md:top-[22px] md:left-[22px]">
-            <PlayBadge video={reel} label={t.heroBadge} />
+            <PlayBadge video={whyRise} label={t.heroBadge} />
           </div>
           <div className="relative flex w-full flex-wrap items-end justify-between gap-8 px-5 pt-24 pb-6 sm:px-8 md:px-10 md:pt-[88px] md:pb-10">
             <div className="flex max-w-[560px] flex-col gap-4">
@@ -71,7 +71,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
                   {t.donate}
                 </Link>
                 <Link
-                  href={href("/volunteer")}
+                  href={href("/get-involved?tab=volunteer")}
                   className="inline-flex items-center rounded-full border-[1.5px] border-white px-6 py-3 font-heading text-base text-white transition-colors hover:bg-white/14"
                 >
                   {t.volunteer}
@@ -120,7 +120,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
         </div>
       </section>
 
-      {/* ─── Where your gift goes ─── */}
+      {/* ─── Where your donation goes ─── */}
       <WhereItGoes lang={lang} />
 
       {/* ─── Partner quote ─── */}
@@ -198,7 +198,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
               {t.donate}
             </Link>
             <Link
-              href={href("/volunteer")}
+              href={href("/get-involved?tab=volunteer")}
               className="inline-flex items-center rounded-full border-[1.5px] border-white px-[26px] py-[13px] font-heading text-base text-white transition-colors hover:bg-accent-600"
             >
               {t.volunteer}

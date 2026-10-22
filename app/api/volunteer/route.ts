@@ -52,11 +52,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // If RISE Catfish King Event is selected, we require help options
-    const hasCatfishEvent = selectedEvents.includes("RISE Catfish King Event");
+    // If Next RISE community meal is selected, we require help options
+    const hasCatfishEvent = selectedEvents.includes("Next RISE community meal");
     if (hasCatfishEvent && (!Array.isArray(helpOptions) || helpOptions.length === 0)) {
       return NextResponse.json(
-        { error: "Please select how you would like to help for the RISE Catfish King Event." },
+        { error: "Please select how you would like to help for the Next RISE community meal." },
         { status: 400 }
       );
     }
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
 
           ${hasCatfishEvent ? `
             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 20px;">
-              <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">How to Help (RISE Catfish King Event)</p>
+              <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">How to Help (Next RISE community meal)</p>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #334155; line-height: 1.6;">
                 ${helpOptions.map((option: string) => `<li style="margin-bottom: 4px;">${escapeHtml(option)}</li>`).join("")}
               </ul>

@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
       donation: "Donation Support",
       volunteer: "Volunteer Opportunities",
       partnership: "Community Partnership",
+      events: "Events",
     };
 
     const label = inquiryLabels[inquiryType] || inquiryType;

@@ -6,7 +6,7 @@ import { hasLocale, localizePath, type Locale } from "@/lib/i18n/config";
 import { pageCopy } from "@/lib/i18n/pages";
 import { playable, video } from "@/lib/media";
 
-// Set this page as the Givebutter redirect URL after a completed gift (handoff 1h).
+// Set this page as the Givebutter redirect URL after a completed donation (handoff 1h).
 export const metadata: Metadata = {
   title: "Thank you",
   robots: { index: false, follow: false },

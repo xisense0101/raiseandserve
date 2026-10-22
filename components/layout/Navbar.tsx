@@ -11,16 +11,8 @@ import { localizePath, stripLocale } from "@/lib/i18n/config";
 import { NAV_LINKS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-/** Old routes that now live under a new nav item, so the item still lights up. */
-const ACTIVE_ALIASES: Record<string, string[]> = {
-  "/programs": ["/services"],
-  "/get-involved": ["/volunteer", "/apply", "/shop", "/contact"],
-};
-
 function isActive(path: string, href: string) {
-  return [href, ...(ACTIVE_ALIASES[href] ?? [])].some(
-    (h) => path === h || path.startsWith(`${h}/`),
-  );
+  return path === href || path.startsWith(`${href}/`);
 }
 
 export default function Navbar() {
@@ -50,17 +42,17 @@ export default function Navbar() {
         <Link
           href={href("/")}
           onClick={close}
-          className="mr-auto flex items-center gap-2.5 rounded-[14px] text-ink no-underline"
+          className="mr-auto flex items-center rounded-soft-sm py-1 text-ink no-underline"
         >
           <Image
-            src="/logo.jpeg"
+            src="/logo-mark.png"
             alt=""
-            width={46}
-            height={46}
+            width={856}
+            height={422}
             priority
-            className="size-10 rounded-[14px] bg-white object-contain sm:size-[46px]"
+            sizes="96px"
+            className="h-9 w-auto sm:h-10"
           />
-          <span className="hidden font-heading text-xl leading-none min-[400px]:inline">RISE</span>
           <span className="sr-only">{dict.orgName}</span>
         </Link>
 
@@ -139,7 +131,7 @@ export default function Navbar() {
           <Link href={href("/donate")} onClick={close} className="btn-primary px-4 py-3 text-base">
             {dict.nav.donate}
           </Link>
-          <Link href={href("/volunteer")} onClick={close} className="btn-secondary px-4 py-3 text-base">
+          <Link href={href("/get-involved?tab=volunteer")} onClick={close} className="btn-secondary px-4 py-3 text-base">
             {dict.nav.volunteer}
           </Link>
         </div>

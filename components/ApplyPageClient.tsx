@@ -309,20 +309,20 @@ export default function ApplyPageClient() {
 
   // Reusable input styling tokens
   const baseInputStyle = (hasError: boolean) => 
-    `w-full px-4 py-3 rounded-xl border bg-slate-50/50 hover:bg-white focus:bg-white text-slate-800 text-sm font-medium outline-none transition-all duration-200 ${
+    `w-full px-4 py-3 rounded-soft border bg-neutral-100/50 hover:bg-page focus:bg-page text-ink text-sm font-medium outline-none transition-all duration-200 ${
       hasError 
         ? "border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 bg-red-50/10" 
-        : "border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10"
+        : "border-neutral-300 focus:border-primary focus:ring-4 focus:ring-primary/10"
     }`;
 
-  const labelStyle = "text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1.5";
+  const labelStyle = "text-[10px] md:text-xs font-bold text-neutral-500 uppercase tracking-widest block mb-1.5";
 
   const stateMenu =
     isStateOpen && stateMenuStyle
       ? createPortal(
           <div
             id="state-dropdown-portal"
-            className="fixed z-[1000] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl"
+            className="fixed z-[1000] overflow-hidden rounded-soft border border-neutral-300 bg-page shadow-xl"
             style={{
               top: stateMenuStyle.top,
               left: stateMenuStyle.left,
@@ -338,8 +338,8 @@ export default function ApplyPageClient() {
                     setFormData((prev) => ({ ...prev, state: st }));
                     setIsStateOpen(false);
                   }}
-                  className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-slate-50 ${
-                    formData.state === st ? "bg-primary/5 font-semibold text-primary" : "text-slate-700"
+                  className={`block w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-100 ${
+                    formData.state === st ? "bg-primary/5 font-semibold text-primary" : "text-neutral-700"
                   }`}
                   role="option"
                   aria-selected={formData.state === st}
@@ -355,12 +355,12 @@ export default function ApplyPageClient() {
 
   if (submitted) {
     return (
-      <div className="bg-background rounded-3xl shadow-2xl border border-border p-8 md:p-12 text-center max-w-xl mx-auto space-y-6 animate-fade-in">
-        <div className="mx-auto w-16 h-16 rounded-full bg-green-50 flex items-center justify-center text-green-500 mb-2 shadow-sm">
+      <div className="bg-background rounded-soft-lg shadow-2xl border border-border p-8 md:p-12 text-center max-w-xl mx-auto space-y-6 animate-fade-in">
+        <div className="mx-auto w-16 h-16 rounded-full bg-accent-2-100 flex items-center justify-center text-accent-2-500 mb-2 shadow-sm">
           <CheckCircle size={40} className="animate-bounce" />
         </div>
-        <h2 className="text-3xl font-heading font-extrabold text-slate-900 tracking-tight">Application Submitted!</h2>
-        <p className="text-slate-600 leading-relaxed text-sm md:text-base font-body max-w-md mx-auto">
+        <h2 className="text-3xl font-heading font-extrabold text-ink tracking-tight">Application Submitted!</h2>
+        <p className="text-neutral-600 leading-relaxed text-sm md:text-base font-body max-w-md mx-auto">
           Thank you for applying to work with RISE. Our team will review your credentials and get back to you within 3–5 business days.
         </p>
         <button
@@ -390,7 +390,7 @@ export default function ApplyPageClient() {
             setStep(1);
             setSubmitted(false);
           }}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-all duration-200 shadow-lg shadow-primary/20 cursor-pointer"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-soft hover:bg-primary-dark transition-all duration-200 shadow-lg shadow-primary/20 cursor-pointer"
         >
           Submit Another Application
         </button>
@@ -401,23 +401,23 @@ export default function ApplyPageClient() {
   return (
     <>
       {stateMenu}
-      <div className="bg-background rounded-3xl shadow-2xl border border-border overflow-hidden flex flex-col lg:flex-row min-h-[600px] w-full max-w-4xl mx-auto">
+      <div className="bg-background rounded-soft-lg shadow-lg overflow-hidden flex flex-col lg:flex-row min-h-[600px] w-full">
       
       {/* Sidebar Progress Steps */}
-      <div className="lg:w-1/3 bg-gradient-to-b from-[#0f1e36] to-[#050c18] text-white p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800 relative">
+      <div className="lg:w-1/3 bg-ink text-white p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-ink relative">
         <div className="space-y-10 relative z-10">
           <div>
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full mb-3">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-accent-300 bg-accent/10 border border-accent/20 px-3 py-1 rounded-full mb-3">
               <span className="w-1 h-1 rounded-full bg-accent animate-pulse" />
               Join Rise
             </span>
             <h2 className="text-2xl font-heading font-extrabold text-white tracking-tight">Apply to RISE</h2>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">Complete the three-step application to share your background, goals, and required documents.</p>
+            <p className="text-xs text-neutral-400 mt-1 leading-relaxed">Complete the three-step application to share your background, goals, and required documents.</p>
           </div>
           
           <div className="relative">
             {/* Desktop Stepper vertical line connector */}
-            <div className="absolute left-[15px] top-4 bottom-4 w-0.5 bg-slate-800 hidden lg:block -z-10" />
+            <div className="absolute left-[15px] top-4 bottom-4 w-0.5 bg-neutral-800 hidden lg:block -z-10" />
             
             <div className="flex flex-row lg:flex-col gap-4 lg:gap-8 justify-between lg:justify-start">
               
@@ -425,16 +425,16 @@ export default function ApplyPageClient() {
               <div className={`flex items-center gap-3 transition-all duration-300 ${step === 1 ? "opacity-100 scale-100" : "opacity-50 scale-95"}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-10 shrink-0 ${
                   step === 1 
-                    ? "bg-accent text-slate-900 shadow-lg shadow-accent/20 border-2 border-accent" 
+                    ? "bg-accent text-ink shadow-lg shadow-accent/20 border-2 border-accent" 
                     : step > 1 
-                      ? "bg-green-500 text-white border border-green-500" 
-                      : "bg-slate-900 text-slate-400 border border-slate-850"
+                      ? "bg-accent-2-500 text-white border border-accent-2-500" 
+                      : "bg-neutral-800 text-neutral-300 border border-neutral-700"
                 }`}>
                   {step > 1 ? <CheckCircle size={14} /> : <User size={14} />}
                 </div>
                 <div className="hidden lg:block text-left">
                   <p className="text-xs font-bold leading-tight">Step 1</p>
-                  <p className="text-[10px] text-slate-400 mt-0.5 leading-none">Personal Info</p>
+                  <p className="text-[10px] text-neutral-400 mt-0.5 leading-none">Personal Info</p>
                 </div>
               </div>
 
@@ -442,16 +442,16 @@ export default function ApplyPageClient() {
               <div className={`flex items-center gap-3 transition-all duration-300 ${step === 2 ? "opacity-100 scale-100" : "opacity-50 scale-95"}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-10 shrink-0 ${
                   step === 2 
-                    ? "bg-accent text-slate-900 shadow-lg shadow-accent/20 border-2 border-accent" 
+                    ? "bg-accent text-ink shadow-lg shadow-accent/20 border-2 border-accent" 
                     : step > 2 
-                      ? "bg-green-500 text-white border border-green-500" 
-                      : "bg-slate-900 text-slate-400 border border-slate-850"
+                      ? "bg-accent-2-500 text-white border border-accent-2-500" 
+                      : "bg-neutral-800 text-neutral-300 border border-neutral-700"
                 }`}>
                   {step > 2 ? <CheckCircle size={14} /> : <BookOpen size={14} />}
                 </div>
                 <div className="hidden lg:block text-left">
                   <p className="text-xs font-bold leading-tight">Step 2</p>
-                  <p className="text-[10px] text-slate-400 mt-0.5 leading-none">Background & Goals</p>
+                  <p className="text-[10px] text-neutral-400 mt-0.5 leading-none">Background & Goals</p>
                 </div>
               </div>
 
@@ -459,14 +459,14 @@ export default function ApplyPageClient() {
               <div className={`flex items-center gap-3 transition-all duration-300 ${step === 3 ? "opacity-100 scale-100" : "opacity-50 scale-95"}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 relative z-10 shrink-0 ${
                   step === 3 
-                    ? "bg-accent text-slate-900 shadow-lg shadow-accent/20 border-2 border-accent" 
-                    : "bg-slate-900 text-slate-400 border border-slate-850"
+                    ? "bg-accent text-ink shadow-lg shadow-accent/20 border-2 border-accent" 
+                    : "bg-neutral-800 text-neutral-300 border border-neutral-700"
                 }`}>
                   <FileText size={14} />
                 </div>
                 <div className="hidden lg:block text-left">
                   <p className="text-xs font-bold leading-tight">Step 3</p>
-                  <p className="text-[10px] text-slate-400 mt-0.5 leading-none">Documents & Confirm</p>
+                  <p className="text-[10px] text-neutral-400 mt-0.5 leading-none">Documents & Confirm</p>
                 </div>
               </div>
 
@@ -474,11 +474,11 @@ export default function ApplyPageClient() {
           </div>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2.5 bg-white/5 rounded-2xl p-4 border border-white/5 text-xs text-slate-400 z-10">
-          <HelpCircle size={16} className="text-accent shrink-0" />
+        <div className="hidden lg:flex items-center gap-2.5 bg-white/5 rounded-soft p-4 border border-white/5 text-xs text-neutral-400 z-10">
+          <HelpCircle size={16} className="text-accent-300 shrink-0" />
           <div className="min-w-0">
-            <p className="font-semibold text-slate-300">Need Assistance?</p>
-            <a href="tel:9725233544" className="text-accent font-bold hover:text-white transition-colors block mt-0.5">(972) 523-3544</a>
+            <p className="font-semibold text-neutral-300">Need Assistance?</p>
+            <a href="tel:9725233544" className="text-accent-300 font-bold hover:text-white transition-colors block mt-0.5">(972) 523-3544</a>
           </div>
         </div>
       </div>
@@ -492,9 +492,9 @@ export default function ApplyPageClient() {
             {/* STEP 1: Personal Information */}
             {step === 1 && (
               <div className="space-y-6 animate-fade-in">
-                <div className="border-b border-slate-100 pb-3">
-                  <h3 className="text-xl font-heading font-extrabold text-slate-900 tracking-tight">Personal Information</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Please provide your primary contact details and general location.</p>
+                <div className="border-b border-neutral-300 pb-3">
+                  <h3 className="text-xl font-heading font-extrabold text-ink tracking-tight">Personal Information</h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">Please provide your primary contact details and general location.</p>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -577,12 +577,12 @@ export default function ApplyPageClient() {
                         aria-expanded={isStateOpen}
                         aria-haspopup="listbox"
                       >
-                        <span className={formData.state ? "text-slate-800" : "text-slate-400"}>
+                        <span className={formData.state ? "text-ink" : "text-neutral-400"}>
                           {formData.state || "Select State"}
                         </span>
                         <ChevronDown
                           size={16}
-                          className={`shrink-0 text-slate-400 transition-transform duration-200 ${isStateOpen ? "rotate-180" : ""}`}
+                          className={`shrink-0 text-neutral-400 transition-transform duration-200 ${isStateOpen ? "rotate-180" : ""}`}
                         />
                       </button>
                     </div>
@@ -594,9 +594,9 @@ export default function ApplyPageClient() {
             {/* STEP 2: Background & Goals */}
             {step === 2 && (
               <div className="space-y-6 animate-fade-in">
-                <div className="border-b border-slate-100 pb-3">
-                  <h3 className="text-xl font-heading font-extrabold text-slate-900 tracking-tight">Background & Goals</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Provide information regarding your education, goals, and availability.</p>
+                <div className="border-b border-neutral-300 pb-3">
+                  <h3 className="text-xl font-heading font-extrabold text-ink tracking-tight">Background & Goals</h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">Provide information regarding your education, goals, and availability.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -704,10 +704,10 @@ export default function ApplyPageClient() {
                           key={type}
                           type="button"
                           onClick={() => handleCheckboxChange(type)}
-                          className={`px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all duration-200 cursor-pointer ${
+                          className={`px-4 py-2.5 rounded-soft text-xs font-semibold border transition-all duration-200 cursor-pointer ${
                             checked
                               ? "bg-primary text-white border-primary shadow-md shadow-primary/10"
-                              : "bg-slate-50/50 text-slate-600 border-slate-200 hover:border-slate-350 hover:bg-white"
+                              : "bg-neutral-100/50 text-neutral-600 border-neutral-300 hover:border-neutral-350 hover:bg-page"
                           }`}
                         >
                           {type}
@@ -736,9 +736,9 @@ export default function ApplyPageClient() {
             {/* STEP 3: Documents & References */}
             {step === 3 && (
               <div className="space-y-6 animate-fade-in">
-                <div className="border-b border-slate-100 pb-3">
-                  <h3 className="text-xl font-heading font-extrabold text-slate-900 tracking-tight">Documents & References</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Upload your resume, add optional work samples, and provide a reference before submitting.</p>
+                <div className="border-b border-neutral-300 pb-3">
+                  <h3 className="text-xl font-heading font-extrabold text-ink tracking-tight">Documents & References</h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">Upload your resume, add optional work samples, and provide a reference before submitting.</p>
                 </div>
 
                 {/* Upload Fields */}
@@ -755,17 +755,17 @@ export default function ApplyPageClient() {
                       className="hidden"
                     />
                     {resume ? (
-                      <div className="flex items-center justify-between bg-green-50/60 border border-green-200 p-4 rounded-2xl transition-all duration-200">
+                      <div className="flex items-center justify-between bg-accent-2-100/60 border border-accent-2-200 p-4 rounded-soft transition-all duration-200">
                         <div className="flex items-center gap-3 overflow-hidden">
-                          <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center shrink-0">
-                            <FileText size={20} className="text-green-600" />
+                          <div className="w-10 h-10 rounded-soft bg-accent-2-100 flex items-center justify-center shrink-0">
+                            <FileText size={20} className="text-accent-2-600" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs font-bold text-slate-800 truncate">{resume.name}</p>
-                            <p className="text-[10px] text-slate-500 mt-0.5">{(resume.size / (1024 * 1024)).toFixed(2)} MB</p>
+                            <p className="text-xs font-bold text-ink truncate">{resume.name}</p>
+                            <p className="text-[10px] text-neutral-500 mt-0.5">{(resume.size / (1024 * 1024)).toFixed(2)} MB</p>
                           </div>
                         </div>
-                        <button type="button" onClick={() => removeFile("resume")} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer">
+                        <button type="button" onClick={() => removeFile("resume")} className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-soft transition-colors cursor-pointer">
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -773,15 +773,15 @@ export default function ApplyPageClient() {
                       <button
                         type="button"
                         onClick={() => resumeInputRef.current?.click()}
-                        className={`w-full flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-6 hover:bg-slate-50/40 transition-all duration-250 cursor-pointer ${
+                        className={`w-full flex flex-col items-center justify-center border-2 border-dashed rounded-soft p-6 hover:bg-neutral-100/40 transition-all duration-250 cursor-pointer ${
                           errors.resume
                             ? "border-red-300 bg-red-50/10 focus:ring-4 focus:ring-red-500/10"
-                            : "border-slate-200 hover:border-primary/50 focus:border-primary"
+                            : "border-neutral-300 hover:border-primary/50 focus:border-primary"
                         }`}
                       >
-                        <Upload size={22} className="text-slate-400 mb-2" />
-                        <span className="text-xs font-bold text-slate-700">Upload Resume</span>
-                        <span className="text-[10px] text-slate-400 mt-1">Supports PDF, DOC, DOCX up to 10MB</span>
+                        <Upload size={22} className="text-neutral-400 mb-2" />
+                        <span className="text-xs font-bold text-neutral-700">Upload Resume</span>
+                        <span className="text-[10px] text-neutral-400 mt-1">Supports PDF, DOC, DOCX up to 10MB</span>
                       </button>
                     )}
                     {errors.resume && <p className="text-xs text-red-500 mt-1 font-medium">{errors.resume}</p>}
@@ -797,17 +797,17 @@ export default function ApplyPageClient() {
                       className="hidden"
                     />
                     {portfolio ? (
-                      <div className="flex items-center justify-between bg-slate-50 border border-slate-250 p-4 rounded-2xl transition-all duration-200">
+                      <div className="flex items-center justify-between bg-neutral-100 border border-neutral-250 p-4 rounded-soft transition-all duration-200">
                         <div className="flex items-center gap-3 overflow-hidden">
-                          <div className="w-10 h-10 rounded-xl bg-slate-200 flex items-center justify-center shrink-0">
-                            <FileText size={20} className="text-slate-600" />
+                          <div className="w-10 h-10 rounded-soft bg-neutral-200 flex items-center justify-center shrink-0">
+                            <FileText size={20} className="text-neutral-600" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs font-bold text-slate-800 truncate">{portfolio.name}</p>
-                            <p className="text-[10px] text-slate-500 mt-0.5">{(portfolio.size / (1024 * 1024)).toFixed(2)} MB</p>
+                            <p className="text-xs font-bold text-ink truncate">{portfolio.name}</p>
+                            <p className="text-[10px] text-neutral-500 mt-0.5">{(portfolio.size / (1024 * 1024)).toFixed(2)} MB</p>
                           </div>
                         </div>
-                        <button type="button" onClick={() => removeFile("portfolio")} className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer">
+                        <button type="button" onClick={() => removeFile("portfolio")} className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded-soft transition-colors cursor-pointer">
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -815,11 +815,11 @@ export default function ApplyPageClient() {
                       <button
                         type="button"
                         onClick={() => portfolioInputRef.current?.click()}
-                        className="w-full flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl p-6 hover:bg-slate-50/40 hover:border-primary/50 transition-all duration-250 cursor-pointer"
+                        className="w-full flex flex-col items-center justify-center border-2 border-dashed border-neutral-300 rounded-soft p-6 hover:bg-neutral-100/40 hover:border-primary/50 transition-all duration-250 cursor-pointer"
                       >
-                        <Upload size={22} className="text-slate-400 mb-2" />
-                        <span className="text-xs font-bold text-slate-700">Upload Portfolio</span>
-                        <span className="text-[10px] text-slate-400 mt-1">Any format up to 20MB</span>
+                        <Upload size={22} className="text-neutral-400 mb-2" />
+                        <span className="text-xs font-bold text-neutral-700">Upload Portfolio</span>
+                        <span className="text-[10px] text-neutral-400 mt-1">Any format up to 20MB</span>
                       </button>
                     )}
                   </div>
@@ -829,7 +829,7 @@ export default function ApplyPageClient() {
                   <div className="space-y-0.5">
                     <label className={labelStyle}>
                       <span className="flex items-center gap-1.5">
-                        <LinkIcon size={13} className="text-slate-400" />
+                        <LinkIcon size={13} className="text-neutral-400" />
                         LinkedIn URL
                       </span>
                     </label>
@@ -858,7 +858,7 @@ export default function ApplyPageClient() {
                 </div>
 
                 {/* Terms Agreement Checkbox */}
-                <div className="pt-4 border-t border-slate-100 space-y-1">
+                <div className="pt-4 border-t border-neutral-300 space-y-1">
                   <label className="flex items-start gap-3 cursor-pointer group">
                     <input
                       type="checkbox"
@@ -871,9 +871,9 @@ export default function ApplyPageClient() {
                           setErrors(newErrors);
                         }
                       }}
-                      className="mt-0.5 rounded border-slate-350 text-primary focus:ring-primary w-4 h-4 cursor-pointer"
+                      className="mt-0.5 rounded border-neutral-350 text-primary focus:ring-primary w-4 h-4 cursor-pointer"
                     />
-                    <span className="text-xs text-slate-600 group-hover:text-slate-800 transition-colors select-none leading-relaxed">
+                    <span className="text-xs text-neutral-600 group-hover:text-ink transition-colors select-none leading-relaxed">
                       I agree to the RISE Participant Agreement and confirm all information is accurate. *
                     </span>
                   </label>
@@ -889,19 +889,19 @@ export default function ApplyPageClient() {
           )}
 
           {submitError && (
-            <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-semibold animate-fade-in shrink-0">
+            <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-soft text-xs text-red-700 font-semibold animate-fade-in shrink-0">
               {submitError}
             </div>
           )}
 
           {/* Form Actions Footer Panel */}
-          <div className="flex items-center justify-between pt-5 border-t border-slate-100 mt-auto shrink-0">
+          <div className="flex items-center justify-between pt-5 border-t border-neutral-300 mt-auto shrink-0">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={handleBack}
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-1.5 px-5 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-5 py-3 border border-neutral-300 text-neutral-700 font-bold rounded-soft hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs cursor-pointer"
               >
                 <ArrowLeft size={14} />
                 Back
@@ -915,7 +915,7 @@ export default function ApplyPageClient() {
                 type="button"
                 onClick={handleNext}
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-1.5 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md shadow-primary/10 text-xs cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-6 py-3 bg-primary text-white font-bold rounded-soft hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md shadow-primary/10 text-xs cursor-pointer"
               >
                 Next
                 <ArrowRight size={14} />
@@ -924,7 +924,7 @@ export default function ApplyPageClient() {
               <button
                 type="submit"
                 disabled={isSubmitting || !turnstileToken}
-                className="inline-flex items-center gap-1.5 px-7 py-3 bg-primary hover:bg-primary-dark disabled:bg-primary/70 disabled:cursor-not-allowed text-white font-extrabold rounded-xl shadow-lg shadow-primary/20 transition-all duration-200 text-xs cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-7 py-3 bg-primary hover:bg-primary-dark disabled:bg-primary/70 disabled:cursor-not-allowed text-white font-extrabold rounded-soft shadow-lg shadow-primary/20 transition-all duration-200 text-xs cursor-pointer"
               >
                 {isSubmitting ? (
                   <>

@@ -17,11 +17,12 @@ export default function Footer({ lang }: { lang: Locale }) {
       <div className="mx-auto grid max-w-site grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-9 px-6 pt-14 pb-7">
         <div className="flex flex-col items-start gap-3.5">
           <Image
-            src="/logo.jpeg"
-            alt="RISE"
-            width={56}
-            height={56}
-            className="size-14 rounded-soft bg-white object-contain"
+            src="/logo-full.png"
+            alt="RISE: Resourceful Impact in Scholastic Education"
+            width={864}
+            height={574}
+            sizes="180px"
+            className="h-auto w-[180px]"
           />
           <p>{dict.footer.mission}</p>
           <Link href={href("/donate")} className="btn-primary px-5 py-2.5 text-[15px]">
@@ -38,6 +39,9 @@ export default function Footer({ lang }: { lang: Locale }) {
               {dict.nav[l.key]}
             </Link>
           ))}
+          <Link href={href("/contact")} className={linkClass}>
+            {dict.nav.contact}
+          </Link>
           <Link href={href("/donate")} className={linkClass}>
             {dict.nav.donate}
           </Link>
