@@ -1,11 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getClientIp, checkRateLimit } from "@/lib/rateLimit";
 import { resend } from "@/lib/resend";
+import { escapeHtml } from "@/lib/security";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Rate Limiting
     const ip = getClientIp(req);
+
+    // Parse body
+    const body = await req.json();
+
+    // Bot check first, so automated traffic never consumes a visitor's rate-limit slot.
+    const verification = await verifyTurnstile(body?.turnstileToken, ip, "volunteer");
+    if (!verification.ok) {
+      return NextResponse.json({ error: verification.error }, { status: verification.status });
+    }
+
+    // Rate limiting
     const { allowed, remainingMs } = checkRateLimit(ip);
     
     if (!allowed) {
@@ -15,9 +27,6 @@ export async function POST(req: NextRequest) {
         { status: 429 }
       );
     }
-
-    // 2. Parse and Validate Body
-    const body = await req.json();
     const { fullName, email, phone, volunteeredBefore, selectedEvents, helpOptions } = body;
 
     // Validation
@@ -73,20 +82,20 @@ export async function POST(req: NextRequest) {
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <tr>
               <td style="padding: 8px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; width: 180px; border-bottom: 1px solid #f1f5f9;">Full Name</td>
-              <td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${fullName}</td>
+              <td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(fullName)}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Email Address</td>
-              <td style="padding: 8px 0; font-size: 14px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${email}" style="color: #007ed1; text-decoration: none; font-weight: 500;">${email}</a></td>
+              <td style="padding: 8px 0; font-size: 14px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${escapeHtml(email)}" style="color: #007ed1; text-decoration: none; font-weight: 500;">${escapeHtml(email)}</a></td>
             </tr>
             <tr>
               <td style="padding: 8px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Phone Number</td>
-              <td style="padding: 8px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${phone || "Not provided"}</td>
+              <td style="padding: 8px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(phone || "Not provided")}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Volunteered Before?</td>
-              <td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: ${volunteeredBefore.toLowerCase() === "yes" ? "#16a34a" : "#4b5563"}; border-bottom: 1px solid #f1f5f9;">
-                ${volunteeredBefore}
+              <td style="padding: 8px 0; font-size: 14px; font-weight: 600; color: ${String(volunteeredBefore).toLowerCase() === "yes" ? "#16a34a" : "#4b5563"}; border-bottom: 1px solid #f1f5f9;">
+                ${escapeHtml(volunteeredBefore)}
               </td>
             </tr>
           </table>
@@ -95,14 +104,14 @@ export async function POST(req: NextRequest) {
             Selected Events
           </h3>
           <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #0f172a; line-height: 1.6;">
-            ${selectedEvents.map((event: string) => `<li style="margin-bottom: 6px; font-weight: 600;">${event}</li>`).join("")}
+            ${selectedEvents.map((event: string) => `<li style="margin-bottom: 6px; font-weight: 600;">${escapeHtml(event)}</li>`).join("")}
           </ul>
 
           ${hasCatfishEvent ? `
             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 20px;">
               <p style="margin: 0 0 8px 0; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">How to Help (RISE Catfish King Event)</p>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #334155; line-height: 1.6;">
-                ${helpOptions.map((option: string) => `<li style="margin-bottom: 4px;">${option}</li>`).join("")}
+                ${helpOptions.map((option: string) => `<li style="margin-bottom: 4px;">${escapeHtml(option)}</li>`).join("")}
               </ul>
             </div>
           ` : ""}

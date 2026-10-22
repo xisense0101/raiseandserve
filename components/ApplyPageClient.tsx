@@ -3,11 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { User, BookOpen, FileText, CheckCircle, ArrowRight, ArrowLeft, Upload, Link as LinkIcon, Trash2, HelpCircle, ChevronDown } from "lucide-react";
+import Turnstile, { type TurnstileHandle } from "@/components/security/Turnstile";
 
 export default function ApplyPageClient() {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isStateOpen, setIsStateOpen] = useState(false);
   const [stateMenuStyle, setStateMenuStyle] = useState<{ top: number; left: number; width: number } | null>(null);
@@ -227,6 +230,7 @@ export default function ApplyPageClient() {
       if (portfolio) {
         data.append("portfolio", portfolio);
       }
+      data.append("turnstileToken", turnstileToken ?? "");
 
       const res = await fetch("/api/apply", {
         method: "POST",
@@ -242,6 +246,7 @@ export default function ApplyPageClient() {
     } catch (err: any) {
       setSubmitError(err.message || "An unexpected error occurred. Please try again later.");
     } finally {
+      turnstileRef.current?.reset();
       setIsSubmitting(false);
     }
   };
@@ -879,6 +884,10 @@ export default function ApplyPageClient() {
 
           </div>
 
+          {step === 3 && (
+            <Turnstile action="apply" onToken={setTurnstileToken} ref={turnstileRef} className="shrink-0" />
+          )}
+
           {submitError && (
             <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-semibold animate-fade-in shrink-0">
               {submitError}
@@ -914,7 +923,7 @@ export default function ApplyPageClient() {
             ) : (
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !turnstileToken}
                 className="inline-flex items-center gap-1.5 px-7 py-3 bg-primary hover:bg-primary-dark disabled:bg-primary/70 disabled:cursor-not-allowed text-white font-extrabold rounded-xl shadow-lg shadow-primary/20 transition-all duration-200 text-xs cursor-pointer"
               >
                 {isSubmitting ? (

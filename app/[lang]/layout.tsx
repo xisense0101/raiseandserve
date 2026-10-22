@@ -1,12 +1,17 @@
-import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
+import type { Metadata, Viewport } from "next";
+import { Caprasimo, Figtree } from "next/font/google";
+import { notFound } from "next/navigation";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import "../globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
+import { LocaleProvider } from "@/components/i18n/LocaleProvider";
+import { GIVEBUTTER_SCRIPT_ID, GIVEBUTTER_SCRIPT_SRC } from "@/lib/givebutter";
+import { hasLocale, locales } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import {
   defaultKeywords,
   organizationName,
@@ -15,19 +20,33 @@ import {
   siteUrl,
 } from "@/lib/seo";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-heading",
+// Headings: Caprasimo (single weight). Body: Figtree variable.
+// Self-hosted by next/font: no request to Google, no layout shift.
+const caprasimo = Caprasimo({
+  weight: "400",
   subsets: ["latin"],
+  variable: "--font-caprasimo",
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-body",
+const figtree = Figtree({
   subsets: ["latin"],
+  variable: "--font-figtree",
   display: "swap",
 });
 
-export const metadata: Metadata = {
+// Both languages are prerendered at build time; anything else 404s.
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export const viewport: Viewport = {
+  themeColor: "#f5ead8",
+};
+
+const baseMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: `${siteName} | ${organizationName}`,
@@ -92,6 +111,16 @@ export const metadata: Metadata = {
   },
 };
 
+
+export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
+  const { lang } = await params;
+  const es = lang === "es";
+  return {
+    ...baseMetadata,
+    openGraph: { ...baseMetadata.openGraph, locale: es ? "es_US" : "en_US" },
+  };
+}
+
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "NGO",
@@ -128,54 +157,49 @@ const organizationJsonLd = {
     telephone: "+1-972-523-3544",
     contactType: "Community support",
     areaServed: "US",
-    availableLanguage: "English",
+    availableLanguage: ["English", "Spanish"],
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const dict = getDictionary(lang);
+
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable}`}>
+    <html lang={lang} className={`${caprasimo.variable} ${figtree.variable}`}>
       <head>
-        {/* Preconnect to GiveButter CDN so TCP/TLS is ready before user navigates to /donate */}
+        {/* Warm up Givebutter so /donate opens instantly */}
         <link rel="preconnect" href="https://widgets.givebutter.com" />
-        <link rel="dns-prefetch" href="https://widgets.givebutter.com" />
         <link rel="preconnect" href="https://cdn.givebutter.com" />
-        <link rel="dns-prefetch" href="https://cdn.givebutter.com" />
-        {/* Preconnect to Zeffy so TCP/TLS is ready before user navigates to /shop */}
-        <link rel="preconnect" href="https://www.zeffy.com" />
         <link rel="dns-prefetch" href="https://www.zeffy.com" />
-        <link rel="preconnect" href="https://cdn.zeffy.com" />
-        <link rel="dns-prefetch" href="https://cdn.zeffy.com" />
-        {/* Prefetch the exact Zeffy iframe document so the HTML is already cached */}
-        <link rel="prefetch" href="https://www.zeffy.com/embed/ticketing/resourceful-impact-in-scholastic-educations-shop" as="document" />
       </head>
-      <body className="antialiased min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
+      <body className="flex min-h-screen flex-col bg-page text-ink antialiased">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-page"
+        >
+          {dict.skipToContent}
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        {/* Load GiveButter globally so the web component is fully registered and cached before navigating to /donate */}
+        {/* Register the Givebutter web component once the browser is idle, so it is
+            cached before a visitor reaches /donate without competing with page load. */}
         <Script
-          id="givebutter-widget"
-          src="https://widgets.givebutter.com/latest.umd.cjs?acct=vlGShfXkMTiyIoYg&p=other"
-          strategy="afterInteractive"
+          id={GIVEBUTTER_SCRIPT_ID}
+          src={GIVEBUTTER_SCRIPT_SRC}
+          strategy="lazyOnload"
         />
-        {/* Hidden prerender for widgets to force the browser to execute their internal iframes and cache everything */}
-        <div style={{ display: 'none' }} aria-hidden="true">
-          {/* @ts-expect-error */}
-          <givebutter-widget id="LeZ9Nv"></givebutter-widget>
-          <iframe src="https://www.zeffy.com/embed/ticketing/resourceful-impact-in-scholastic-educations-shop" />
-        </div>
-        <Navbar />
-        <main className="flex flex-1 min-h-0 flex-col">
-          {children}
-        </main>
-        <Footer />
-        <ScrollToTop />
+        <LocaleProvider lang={lang}>
+          <Navbar />
+          <main id="main" className="flex min-h-0 flex-1 flex-col">
+            {children}
+          </main>
+          <Footer lang={lang} />
+          <ScrollToTop />
+        </LocaleProvider>
         <Analytics />
         <SpeedInsights />
       </body>

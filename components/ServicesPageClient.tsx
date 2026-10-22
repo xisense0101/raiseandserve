@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, MessageSquare, CheckCircle2, Heart } from "lucide-react";
+import Turnstile, { type TurnstileHandle } from "@/components/security/Turnstile";
 
 /* ─── Service definitions ─── */
 const SERVICES = [
@@ -68,6 +69,8 @@ export default function ServicesPageClient() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
@@ -99,6 +102,7 @@ export default function ServicesPageClient() {
           email,
           serviceOfInterest: selectedService,
           message,
+          turnstileToken,
         }),
       });
 
@@ -120,6 +124,7 @@ export default function ServicesPageClient() {
           : "An unexpected error occurred. Please try again.",
       );
     } finally {
+      turnstileRef.current?.reset();
       setIsSubmitting(false);
     }
   };
@@ -393,9 +398,11 @@ export default function ServicesPageClient() {
                       />
                     </div>
 
+                    <Turnstile action="services" onToken={setTurnstileToken} ref={turnstileRef} />
+
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !turnstileToken}
                       className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-bold text-white bg-primary hover:bg-primary-dark transition-all duration-200 text-sm shadow-lg shadow-primary/20 hover:-translate-y-0.5 disabled:opacity-75 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer"
                     >
                       {isSubmitting ? (

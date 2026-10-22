@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowRight, CheckCircle2, AlertCircle, Calendar, Check } from "lucide-react";
+import Turnstile, { type TurnstileHandle } from "@/components/security/Turnstile";
 
 interface EventOption {
   id: string;
@@ -38,6 +39,8 @@ export default function VolunteerForm() {
   const [helpOptions, setHelpOptions] = useState<string[]>([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -110,6 +113,7 @@ export default function VolunteerForm() {
           ...formData,
           selectedEvents,
           helpOptions: hasCatfishEvent ? helpOptions : [],
+          turnstileToken,
         }),
       });
 
@@ -131,6 +135,7 @@ export default function VolunteerForm() {
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred. Please try again.");
     } finally {
+      turnstileRef.current?.reset();
       setIsSubmitting(false);
     }
   };
@@ -346,9 +351,11 @@ export default function VolunteerForm() {
       )}
 
       {/* Submit Button */}
+      <Turnstile action="volunteer" onToken={setTurnstileToken} ref={turnstileRef} />
+
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !turnstileToken}
         className="w-full group px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-xl text-lg font-bold transition-all shadow-lg hover:shadow-primary/30 flex items-center justify-center gap-2 disabled:bg-primary/75 disabled:cursor-not-allowed cursor-pointer"
       >
         {isSubmitting ? (
