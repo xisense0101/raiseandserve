@@ -45,6 +45,11 @@ const en = {
   giveBar: {
     label: "Support RISE",
   },
+  media: {
+    close: "Close video",
+    tapToClose: "Tap anywhere to close",
+    watch: "Watch",
+  },
   verification: {
     checking: "Checking that you're human…",
     failed: "Verification failed. Please refresh the page and try again.",
@@ -94,6 +99,11 @@ const es: Dictionary = {
   },
   giveBar: {
     label: "Apoya a RISE",
+  },
+  media: {
+    close: "Cerrar video",
+    tapToClose: "Toca en cualquier lugar para cerrar",
+    watch: "Ver",
   },
   verification: {
     checking: "Verificando que eres humano…",

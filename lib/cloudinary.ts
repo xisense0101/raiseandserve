@@ -1,81 +1,82 @@
 /**
  * Cloudinary delivery helpers.
  *
- * Media lives in Cloudinary under predictable public IDs (see the handoff):
- *   rise/video/<slug>                     e.g. rise/video/final-render
- *   rise/gallery/<yyyy-mm-dd>-<album>/…   e.g. rise/gallery/2026-07-06-meal/img-8190
+ * Every video URL here is also generated ahead of time as an eager
+ * transformation (scripts/cloudinary-eager.mjs), so visitors never wait for
+ * a first-time transcode. If you change a transformation string, re-run
+ * that script.
  *
- * Everything is delivered with f_auto,q_auto so each browser gets AVIF/WebP
- * (images) or the best codec (video) at the smallest size that looks right.
+ * Syntax follows Cloudinary's rules: one action per component, and
+ * f_auto / q_auto in their own components.
  */
 
-export const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
+export const CLOUDINARY_CLOUD_NAME =
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "nc7sref5";
 
 const BASE = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}`;
 
-export function isCloudinaryConfigured() {
-  return CLOUDINARY_CLOUD_NAME.length > 0;
-}
+/* ─── Images ─────────────────────────────────────────────────────────── */
 
 type ImageOptions = {
   width?: number;
-  height?: number;
-  /** c_fill crops to the box, c_limit only shrinks (default). */
-  crop?: "fill" | "limit" | "thumb";
-  /** Defaults to auto (Cloudinary picks the most interesting region). */
-  gravity?: string;
-  quality?: number | "auto" | "auto:eco" | "auto:good";
-  /** Extra raw transformation, e.g. "e_blur:2000". */
-  raw?: string;
+  /** Crop to this aspect ratio (e.g. "4:5") with automatic gravity. */
+  aspect?: string;
 };
 
-function imageTransform({ width, height, crop = "limit", gravity, quality = "auto", raw }: ImageOptions) {
-  const t = ["f_auto", `q_${quality}`];
-  if (width || height) {
-    t.push(`c_${crop}`);
-    if (width) t.push(`w_${width}`);
-    if (height) t.push(`h_${height}`);
-    if (crop === "fill" || crop === "thumb") t.push(`g_${gravity ?? "auto"}`);
-  }
-  if (raw) t.push(raw);
-  return t.join(",");
+export function imageTransform({ width, aspect }: ImageOptions = {}) {
+  const resize = aspect
+    ? `c_fill,ar_${aspect},g_auto${width ? `,w_${width}` : ""}`
+    : width
+      ? `c_limit,w_${width}`
+      : "";
+  return [resize, "f_auto", "q_auto"].filter(Boolean).join("/");
 }
 
 export function cldImageUrl(publicId: string, options: ImageOptions = {}) {
   return `${BASE}/image/upload/${imageTransform(options)}/${publicId}`;
 }
 
-type VideoOptions = {
-  width?: number;
-  /** Start offset in seconds, for trimmed loops. */
-  start?: number;
-  /** End offset in seconds, for trimmed loops. */
-  end?: number;
-  /** Strip the audio track: smaller files for muted autoplay loops. */
-  muted?: boolean;
+/** next/image loader: Cloudinary resizes and picks AVIF/WebP, Next only builds the srcset. */
+export function cloudinaryLoader({ src, width }: { src: string; width: number }) {
+  return cldImageUrl(src, { width });
+}
+
+/* ─── Video ──────────────────────────────────────────────────────────── */
+
+/** Player with sound, for the modal. 720 px wide is plenty for a 9:16 frame. */
+export const FILM_TX = "c_scale,w_720/q_auto";
+export const filmPosterTx = (second: number) => `so_${second}/c_scale,w_720/q_auto`;
+
+/** Muted 4:5 loop for cards: trimmed, audio stripped, eco quality. */
+export const loopTx = (seconds: number) =>
+  `so_0,eo_${seconds}/ac_none/c_fill,ar_4:5,w_540/q_auto:eco`;
+export const LOOP_POSTER_TX = "so_1/c_fill,ar_4:5,w_540/q_auto";
+
+export function cldVideoUrl(publicId: string, tx: string, ext: "mp4" | "jpg") {
+  return `${BASE}/video/upload/${tx}/${publicId}.${ext}`;
+}
+
+/* ─── Hero loop ──────────────────────────────────────────────────────── */
+
+const HERO_BASE = "riseandserve/videos/riseandserve/videos/IMG_8004";
+const HERO_SPLICE = "fl_splice,l_video:riseandserve:videos:riseandserve:videos:IMG_8005/fl_layer_apply";
+
+/**
+ * The packed Catfish King dining room on July 6: IMG_8004 and IMG_8005
+ * spliced into one ~7 s muted loop, in a wide crop for desktop and the
+ * native 3:4 frame for phones.
+ */
+export const HERO_TX = {
+  wide: `${HERO_SPLICE}/ac_none/c_fill,ar_16:9,w_1280/q_auto:eco`,
+  tall: `${HERO_SPLICE}/ac_none/c_scale,w_720/q_auto:eco`,
+  widePoster: "so_0/c_fill,ar_16:9,w_1280/q_auto",
+  tallPoster: "so_0/c_scale,w_720/q_auto",
 };
 
-/** Adaptive video delivery: the best codec and quality for the requesting browser. */
-export function cldVideoUrl(publicId: string, { width, start, end, muted }: VideoOptions = {}) {
-  const t = ["f_auto:video", "q_auto"];
-  if (width) t.push("c_limit", `w_${width}`);
-  if (start !== undefined) t.push(`so_${start}`);
-  if (end !== undefined) t.push(`eo_${end}`);
-  if (muted) t.push("ac_none");
-  return `${BASE}/video/upload/${t.join(",")}/${publicId}`;
-}
-
-/** A still frame from a video, used as the <video> poster (handoff: posters via so_<sec>). */
-export function cldVideoPosterUrl(publicId: string, { second = 1, width = 1280 } = {}) {
-  return `${BASE}/video/upload/so_${second},f_auto,q_auto,c_limit,w_${width}/${publicId}.jpg`;
-}
-
-/** Captions are uploaded as raw .vtt files next to their video. */
-export function cldCaptionsUrl(publicId: string, lang: "en" | "es") {
-  return `${BASE}/raw/upload/${publicId}.${lang}.vtt`;
-}
-
-/** next/image loader: Cloudinary resizes, Next only picks the srcset widths. */
-export function cloudinaryLoader({ src, width, quality }: { src: string; width: number; quality?: number }) {
-  return cldImageUrl(src, { width, quality: quality ?? "auto" });
-}
+export const HERO_MEDIA = {
+  wide: cldVideoUrl(HERO_BASE, HERO_TX.wide, "mp4"),
+  tall: cldVideoUrl(HERO_BASE, HERO_TX.tall, "mp4"),
+  widePoster: cldVideoUrl(HERO_BASE, HERO_TX.widePoster, "jpg"),
+  tallPoster: cldVideoUrl(HERO_BASE, HERO_TX.tallPoster, "jpg"),
+  base: HERO_BASE,
+};

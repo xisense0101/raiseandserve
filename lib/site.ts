@@ -14,7 +14,7 @@ export const NAV_LINKS: { key: NavKey; href: string; ready: boolean }[] = [
   { key: "about", href: "/about", ready: true },
   { key: "programs", href: "/programs", ready: true },
   { key: "events", href: "/events", ready: true },
-  { key: "gallery", href: "/gallery", ready: false },
+  { key: "gallery", href: "/gallery", ready: true },
   { key: "getInvolved", href: "/get-involved", ready: true },
 ];
 

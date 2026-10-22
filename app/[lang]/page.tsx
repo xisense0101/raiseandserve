@@ -1,371 +1,213 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Heart,
-  Globe,
-  GraduationCap,
-  Sprout,
-} from "lucide-react";
-import HeroSlider from "@/components/HeroSlider";
-import ServicesSlider from "@/components/ServicesSlider";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
-import { Magnetic } from "@/components/motion/Magnetic";
+import { preload } from "react-dom";
+import GiveBox from "@/components/home/GiveBox";
+import HeroMedia from "@/components/home/HeroMedia";
+import MobileGiveBar from "@/components/home/MobileGiveBar";
+import WhereItGoes from "@/components/home/WhereItGoes";
+import CloudinaryImage from "@/components/media/CloudinaryImage";
+import PlayBadge from "@/components/media/PlayBadge";
+import PlayCard from "@/components/media/PlayCard";
+import { HERO_MEDIA } from "@/lib/cloudinary";
+import { hasLocale, localizePath, type Locale } from "@/lib/i18n/config";
+import { pageCopy } from "@/lib/i18n/pages";
+import { photo, playable, video, videoFor } from "@/lib/media";
 import { createMetadata } from "@/lib/seo";
+import { PROGRAM_LINKS } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 export const metadata = createMetadata({
   title: "Community Support Through Education, Food, and Service",
   description:
     "RISE helps communities grow through feeding programs, accessible education, career development, clothing drives, volunteer service, and essential assistance.",
   path: "/",
-  keywords: [
-    "community support",
-    "nonprofit education",
-    "community feeding",
-    "volunteer service",
-    "essential assistance",
-  ],
+  keywords: ["community support", "nonprofit education", "community feeding", "volunteer service", "essential assistance"],
 });
 
-/* ─── Values ─── */
-const VALUES = [
-  {
-    title: "Inclusivity",
-    icon: <Globe size={24} />,
-    desc: "RISE values inclusivity and aims to provide access to resources for all individuals, regardless of background or circumstances.",
-  },
-  {
-    title: "Commitment to Education",
-    icon: <GraduationCap size={24} />,
-    desc: "Dedicated to promoting education as a pathway to success and believing in the importance of continuous learning.",
-  },
-  {
-    title: "Giving Back",
-    icon: <Sprout size={24} />,
-    desc: "Encouraging individuals to give back to their communities and support others on their journey to success.",
-  },
+const PROGRAM_COLORS = ["bg-accent", "bg-accent-2", "bg-accent-700", "bg-accent-2-700"];
+const EVENT_COLORS = ["bg-accent", "bg-accent-2"];
+const EVENT_ALBUMS = ["/gallery/2026-07-06-community-meal", "/gallery/2026-07-20-pantry-fill"];
+
+// Organic shapes from the hi-fi gallery strip: first card arched on top, last arched below.
+const STRIP = [
+  { id: "e2866917-2a36-48e2-a42a-9f5ec2608c76", shape: "rounded-[999px_999px_28px_28px]" },
+  { id: "6087bf8f-23f8-4403-a028-ee495a026cec", shape: "rounded-soft-lg" },
+  { id: "IMG_8193", shape: "rounded-soft-lg" },
+  { id: "c5e72c79-2aa2-4716-8225-a9bd069ca90e", shape: "rounded-[28px_28px_999px_999px]" },
 ];
 
-/* ─── Gallery ─── */
-const GALLERY = [
-  {
-    caption: "Community Feeding Program",
-    img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    caption: "Volunteers Serving Meals",
-    img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    caption: "Food Support and Outreach",
-    img: "https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    caption: "RISE Team & Community Partners",
-    img: "/add-image-1.png",
-  },
-];
+export default async function HomePage({ params }: PageProps<"/[lang]">) {
+  const { lang: raw } = await params;
+  const lang: Locale = hasLocale(raw) ? raw : "en";
+  const t = pageCopy.home(lang);
+  const href = (h: string) => localizePath(lang, h);
 
-export default function Home() {
+  // The hero poster is the LCP element: fetch the right crop for each screen first.
+  preload(HERO_MEDIA.widePoster, { as: "image", fetchPriority: "high", media: "(min-width: 768px)" });
+  preload(HERO_MEDIA.tallPoster, { as: "image", fetchPriority: "high", media: "(max-width: 767px)" });
+
+  const reel = playable(video("reel"), lang);
+  const campaign = playable(videoFor("campaign", lang), lang);
+  const partner = playable(video("jennifer-murphy"), lang);
+
   return (
-    <div className="flex flex-col w-full">
-      {/* ─── Hero Slider ─── */}
-      <HeroSlider />
-
-      {/* ─── LET'S / RISE / TOGETHER ─── */}
-      <section className="py-20 bg-background relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-6" stagger={0.12}>
-            {[
-              {
-                label: "LET'S",
-                text: "Spark change through education, curiosity, and shared purpose.",
-                bg: "bg-primary-light/40",
-                border: "border-primary/10",
-                accent: "text-primary",
-              },
-              {
-                label: "RISE",
-                text: "Rise to your potential with knowledge, support, and empowerment.",
-                bg: "bg-primary",
-                border: "border-transparent",
-                accent: "text-accent",
-                white: true,
-              },
-              {
-                label: "TOGETHER",
-                text: "Build stronger communities through learning and unity.",
-                bg: "bg-primary-light/40",
-                border: "border-primary/10",
-                accent: "text-primary",
-              },
-            ].map((item, i) => (
-              <RevealItem key={i}>
-                <div
-                  className={`${item.bg} border ${item.border} rounded-3xl p-10 flex flex-col justify-between group hover:shadow-xl transition-all duration-300 h-full ${i === 1 ? "md:-translate-y-4 hover:-translate-y-6 shadow-xl shadow-primary/20" : "hover:-translate-y-2"}`}
+    <div className="flex flex-col gap-20 pb-24 md:gap-24">
+      {/* ─── Hero ─── */}
+      {/* The sticky mobile bar waits until hero and give box have both scrolled away. */}
+      <section id="home-hero" className="mx-auto mt-2 w-full max-w-site px-4 sm:px-6">
+        <div
+          className="relative isolate flex min-h-[min(82svh,680px)] items-end overflow-hidden rounded-soft-lg bg-neutral-800 md:min-h-[560px]"
+        >
+          <HeroMedia />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-neutral-900)_35%,transparent)_0%,color-mix(in_srgb,var(--color-neutral-900)_55%,transparent)_45%,color-mix(in_srgb,var(--color-neutral-900)_85%,transparent)_100%)]" />
+          <div className="absolute top-4 left-4 z-10 md:top-[22px] md:left-[22px]">
+            <PlayBadge video={reel} label={t.heroBadge} />
+          </div>
+          <div className="relative flex w-full flex-wrap items-end justify-between gap-8 px-5 pt-24 pb-6 sm:px-8 md:px-10 md:pt-[88px] md:pb-10">
+            <div className="flex max-w-[560px] flex-col gap-4">
+              <h1 className="m-0 text-[clamp(44px,7vw,80px)] leading-none text-white">{t.heroTitle}</h1>
+              <p className="m-0 max-w-[460px] text-lg leading-normal text-pretty text-neutral-100">{t.heroBody}</p>
+              <div className="flex flex-wrap gap-2.5">
+                <Link href={href("/donate")} className="btn-primary px-[26px] py-[13px] text-base">
+                  {t.donate}
+                </Link>
+                <Link
+                  href={href("/volunteer")}
+                  className="inline-flex items-center rounded-full border-[1.5px] border-white px-6 py-3 font-heading text-base text-white transition-colors hover:bg-white/14"
                 >
-                  <div>
-                    <h2 className={`${item.accent} font-bold tracking-widest uppercase text-sm mb-6 relative inline-block`}>
-                      {item.label}
-                      <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-current rounded-full transition-all duration-300 group-hover:w-full" />
-                    </h2>
-                    <p className={`text-2xl font-heading font-semibold leading-relaxed ${item.white ? "text-white" : "text-foreground"}`}>
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+                  {t.volunteer}
+                </Link>
+              </div>
+            </div>
+            <GiveBox className="hidden md:flex" />
+          </div>
         </div>
+        <GiveBox className="mt-4 md:hidden" />
       </section>
 
-      {/* ─── Who We Are ─── */}
-      <section className="py-24 bg-background relative overflow-hidden">
-        {/* Decorative blob */}
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Image collage */}
-            <Reveal className="relative order-2 lg:order-1">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-3xl overflow-hidden h-48 md:h-64 relative group shadow-lg mt-8">
-                  <img
-                    src="/rise-team-1.jpg"
-                    alt="RISE Volunteers"
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent flex items-end p-4">
-                    <span className="text-white font-semibold text-sm">RISE Volunteers</span>
-                  </div>
+      {/* ─── This summer ─── */}
+      <section className="mx-auto grid w-full max-w-site grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] items-center gap-12 px-4 sm:px-6">
+        <PlayCard
+          video={campaign}
+          label={t.summer.filmLabel}
+          className="max-w-[280px] justify-self-center sm:max-w-[340px] sm:justify-self-start"
+        />
+        <div className="flex max-w-[560px] flex-col gap-[18px]">
+          <span className="tag-accent self-start">{t.summer.kicker}</span>
+          <h2 className="m-0 text-[clamp(30px,4vw,44px)]">{t.summer.title}</h2>
+          <p className="m-0 text-[17px] leading-relaxed text-pretty text-neutral-800">{t.summer.body}</p>
+          <div className="flex flex-col gap-3">
+            {t.summer.events.map((e, i) => (
+              <div key={e.day} className="flex items-center gap-4 rounded-soft-lg bg-surface p-3.5">
+                <div
+                  className={cn(
+                    "flex size-[62px] flex-none flex-col items-center justify-center rounded-full font-heading leading-none text-white",
+                    EVENT_COLORS[i],
+                  )}
+                >
+                  <span className="text-xs">{e.mon}</span>
+                  <span className="text-[22px]">{e.day}</span>
                 </div>
-                <div className="rounded-3xl overflow-hidden h-48 md:h-64 relative group shadow-lg">
-                  <img
-                    src="/rise-team-2.jpg"
-                    alt="Community Outreach"
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent flex items-end p-4">
-                    <span className="text-white font-semibold text-sm">Community Outreach</span>
-                  </div>
+                <div className="flex flex-1 flex-col gap-0.5">
+                  <b className="text-base">{e.title}</b>
+                  <span className="text-sm text-neutral-700">{e.where}</span>
                 </div>
-                <div className="rounded-3xl overflow-hidden h-48 md:h-64 relative group shadow-lg mt-8 md:mt-12">
-                  <img
-                    src="/rise-team-3.jpg"
-                    alt="Educational Support"
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent flex items-end p-4">
-                    <span className="text-white font-semibold text-sm">Educational Support</span>
-                  </div>
-                </div>
-                <div className="rounded-3xl overflow-hidden h-48 md:h-64 relative group shadow-lg mt-0 md:mt-4">
-                  <img
-                    src="/rise-team-4.jpg"
-                    alt="Giving Back"
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent flex items-end p-4">
-                    <span className="text-white font-semibold text-sm">Giving Back</span>
-                  </div>
-                </div>
+                <Link href={href(EVENT_ALBUMS[i])} className="text-sm font-bold whitespace-nowrap text-accent-700 hover:text-accent-800">
+                  {t.summer.recap} →
+                </Link>
               </div>
-              {/* Badge */}
-              <div className="absolute -bottom-4 -right-4 md:-bottom-8 md:-right-8 bg-primary text-white px-6 py-4 rounded-2xl shadow-xl shadow-primary/30 text-center">
-                <p className="text-3xl font-extrabold font-heading">2023</p>
-                <p className="text-xs text-primary-light font-medium uppercase tracking-wider mt-0.5">Serving Communities</p>
-              </div>
-            </Reveal>
-
-            {/* Text */}
-            <Reveal delay={0.1} className="order-1 lg:order-2 space-y-6">
-              <h3 className="text-primary font-bold tracking-widest uppercase text-sm flex items-center gap-2">
-                <span className="w-8 h-0.5 bg-primary rounded-full" />
-                Who We Are
-              </h3>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground leading-tight text-balance">
-                Donation for the Better of Our Future World
-              </h2>
-              <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-                <p>
-                  Established in September 2023, RISE is committed to empowering individuals to excel academically. Through workshops, seminars, and community service events, we provide access to educational resources and support.
-                </p>
-                <p>
-                  Led by Chief Innovation Officer Toney Favors, our dedicated team collaborates with academic organizations to guide you academically, connect you to resources, and foster a culture of giving back.
-                </p>
-              </div>
-
-              {/* Mission / Vision cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                {[
-                  { label: "Mission", text: "Empower individuals through innovative educational resources and community support." },
-                  { label: "Vision", text: "Inspire brighter futures through integrated education and community outreach initiatives." },
-                ].map((item) => (
-                  <div key={item.label} className="bg-primary/5 border border-primary/10 rounded-2xl p-5 hover:border-primary/30 transition-colors">
-                    <h4 className="font-heading font-bold text-primary mb-2">{item.label}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.text}</p>
-                  </div>
-                ))}
-              </div>
-
-              <Link
-                href="/about"
-                className="inline-flex items-center font-semibold text-primary hover:text-primary-dark transition-colors group"
-              >
-                Read More
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Programs ─── */}
-      <section className="py-24 bg-muted">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Reveal className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h3 className="text-primary font-bold tracking-widest uppercase text-sm">What We Do</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-              Our Ongoing Services
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Join our ongoing efforts to support education, provide meals, strengthen families, and deliver essential assistance to those in need.
-            </p>
-          </Reveal>
+      {/* ─── Where your gift goes ─── */}
+      <WhereItGoes lang={lang} />
 
-          <ServicesSlider />
-        </div>
-      </section>
-
-      {/* ─── Values ─── */}
-      <section className="py-24 bg-primary-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(#007ED1 2px, transparent 2px)", backgroundSize: "30px 30px" }} />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <Reveal className="lg:col-span-4 space-y-6">
-              <h3 className="text-accent font-bold tracking-widest uppercase text-sm">Our Values</h3>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold leading-tight">
-                Overcoming Challenges With Our True Values
-              </h2>
-              <p className="text-white/60 leading-relaxed">
-                We believe in building a world where everyone has access to the resources, support, and opportunities they need to thrive.
-              </p>
-            </Reveal>
-
-            <RevealGroup className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-6" stagger={0.12} delay={0.1}>
-              {VALUES.map((val, i) => (
-                <RevealItem key={i}>
-                  <div className="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm hover:-translate-y-2 hover:border-accent/30 h-full">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 text-primary-light flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:text-accent transition-colors">
-                      {val.icon}
-                    </div>
-                    <h4 className="text-xl font-heading font-semibold mb-3">{val.title}</h4>
-                    <p className="text-white/60 text-sm leading-relaxed">{val.desc}</p>
-                  </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
+      {/* ─── Partner quote ─── */}
+      <section className="mx-auto w-full max-w-site px-4 sm:px-6">
+        <div className="grid items-center gap-10 rounded-soft-lg bg-accent-2-100 p-6 sm:p-11 md:grid-cols-[minmax(0,280px)_1fr]">
+          <PlayCard video={partner} tone="sage" size="md" label={partner.title} className="mx-auto max-w-[280px]" />
+          <div className="flex flex-col gap-[18px]">
+            <span className="text-xs font-bold tracking-widest text-accent-2-800 uppercase">{t.partner.kicker}</span>
+            <blockquote className="m-0 font-heading text-[clamp(22px,2.6vw,30px)] leading-tight text-pretty text-accent-2-900">
+              “{t.partner.quote}”
+            </blockquote>
+            <div className="flex flex-col">
+              <b>{t.partner.name}</b>
+              <span className="text-sm text-accent-2-800">{t.partner.org}</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── Gallery ─── */}
-      <section className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Reveal className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <h3 className="text-primary font-bold tracking-widest uppercase text-sm">Take A Look</h3>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-              Community in Action
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              See how RISE brings neighbors, volunteers, and partners together through service events, community feeding, and educational support.
-            </p>
-          </Reveal>
-
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12" stagger={0.08}>
-            {GALLERY.map((item, i) => (
-              <RevealItem key={i}>
-                <div className="group relative rounded-3xl overflow-hidden aspect-[4/5] bg-primary-900 shadow-md hover:shadow-xl transition-shadow duration-300">
-                  <img
-                    src={item.img}
-                    alt={item.caption}
-                    className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-5 w-full translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <p className="text-white font-medium text-sm">{item.caption}</p>
-                  </div>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-
-          <div className="text-center">
+      {/* ─── What we do ─── */}
+      <section className="mx-auto flex w-full max-w-site flex-col gap-8 px-4 sm:px-6">
+        <h2 className="m-0 text-[clamp(28px,3.6vw,40px)]">{t.doTitle}</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-5">
+          {t.programs.map((p, i) => (
             <Link
-              href="/events"
-              className="inline-flex items-center justify-center px-8 py-3.5 border-2 border-border rounded-full text-base font-semibold text-foreground hover:border-primary hover:text-primary transition-colors duration-200"
+              key={p.title}
+              href={href(PROGRAM_LINKS[i].href)}
+              className="flex flex-col gap-3 rounded-soft-lg bg-surface p-6 text-ink transition-shadow hover:shadow-md"
             >
-              View All Events
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <span className={cn("grid size-12 place-items-center rounded-full font-heading text-xl text-white", PROGRAM_COLORS[i])}>
+                {i + 1}
+              </span>
+              <b className="font-heading text-[21px] font-normal">{p.title}</b>
+              <span className="text-[15px] leading-normal text-neutral-800">{p.body}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Gallery strip ─── */}
+      <section className="mx-auto flex w-full max-w-site flex-col gap-6 px-4 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-5">
+          <h2 className="m-0 text-[clamp(28px,3.6vw,40px)]">{t.gallery.title}</h2>
+          <Link href={href("/gallery")} className="btn-secondary px-5 py-2.5">
+            {t.gallery.link}
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-3.5 md:grid-cols-4">
+          {STRIP.map(({ id, shape }) => {
+            const p = photo(id);
+            return (
+              <div key={id} className={cn("relative aspect-[4/5] overflow-hidden", shape)}>
+                <CloudinaryImage
+                  publicId={p.publicId}
+                  alt={p.alt}
+                  fill
+                  sizes="(min-width: 768px) 280px, 50vw"
+                  className="washed object-cover"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── CTA band ─── */}
+      <section className="mx-auto w-full max-w-site px-4 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-7 rounded-soft-lg bg-accent px-6 py-12 sm:px-11 sm:py-14">
+          <h2 className="m-0 max-w-[720px] text-[clamp(28px,3.8vw,44px)] text-white">{t.cta}</h2>
+          <div className="flex flex-wrap gap-2.5">
+            <Link
+              href={href("/donate")}
+              className="inline-flex items-center rounded-full bg-page px-7 py-3.5 font-heading text-base text-accent-800 transition-colors hover:bg-accent-100"
+            >
+              {t.donate}
+            </Link>
+            <Link
+              href={href("/volunteer")}
+              className="inline-flex items-center rounded-full border-[1.5px] border-white px-[26px] py-[13px] font-heading text-base text-white transition-colors hover:bg-accent-600"
+            >
+              {t.volunteer}
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── Final CTA ─── */}
-      <section className="py-24 bg-primary relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')" }}
-        />
-        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
-
-        <Reveal className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
-          <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-accent bg-accent/10 border border-accent/30 px-4 py-1.5 rounded-full">
-            <Heart className="h-4 w-4" />
-            Ready to Rise With Us?
-          </span>
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-white text-balance">
-            Every Action Strengthens Our Community
-          </h2>
-          <p className="text-xl text-primary-light max-w-2xl mx-auto leading-relaxed">
-            Donate today, volunteer at an event, or apply to our career program. Together, we build brighter futures.
-          </p>
-
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
-            <Magnetic strength={0.25}>
-              <Link
-                href="/donate"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-primary-dark bg-accent hover:bg-accent-hover transition-colors shadow-lg hover:-translate-y-0.5 transform duration-200 animate-pulse-ring hover-sheen"
-              >
-                Make a Donation
-                <Heart className="ml-2 h-5 w-5" />
-              </Link>
-            </Magnetic>
-            <Magnetic strength={0.25}>
-              <Link
-                href="/volunteer"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-white border-2 border-white/30 hover:bg-white/10 transition-colors hover:-translate-y-0.5 transform duration-200"
-              >
-                Become a Volunteer
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Magnetic>
-          </div>
-        </Reveal>
-      </section>
+      <MobileGiveBar watchId="home-hero" />
     </div>
   );
 }

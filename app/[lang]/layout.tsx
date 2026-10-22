@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
+import { VideoModalProvider } from "@/components/media/VideoModal";
 import { GIVEBUTTER_SCRIPT_ID, GIVEBUTTER_SCRIPT_SRC } from "@/lib/givebutter";
 import { hasLocale, locales } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -172,6 +173,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         {/* Warm up Givebutter so /donate opens instantly */}
         <link rel="preconnect" href="https://widgets.givebutter.com" />
         <link rel="preconnect" href="https://cdn.givebutter.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://www.zeffy.com" />
       </head>
       <body className="flex min-h-screen flex-col bg-page text-ink antialiased">
@@ -193,12 +195,14 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           strategy="lazyOnload"
         />
         <LocaleProvider lang={lang}>
-          <Navbar />
-          <main id="main" className="flex min-h-0 flex-1 flex-col">
-            {children}
-          </main>
-          <Footer lang={lang} />
-          <ScrollToTop />
+          <VideoModalProvider>
+            <Navbar />
+            <main id="main" className="flex min-h-0 flex-1 flex-col">
+              {children}
+            </main>
+            <Footer lang={lang} />
+            <ScrollToTop />
+          </VideoModalProvider>
         </LocaleProvider>
         <Analytics />
         <SpeedInsights />
