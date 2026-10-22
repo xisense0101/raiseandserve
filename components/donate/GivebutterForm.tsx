@@ -69,7 +69,7 @@ export default function GivebutterForm({ loadingLabel }: { loadingLabel: string 
   }, []);
 
   return (
-    <div className="relative min-h-[560px]">
+    <div className="relative min-h-[560px] overflow-hidden rounded-soft bg-white">
       <iframe
         ref={ref}
         id={GIVEBUTTER_FRAME_ID}
