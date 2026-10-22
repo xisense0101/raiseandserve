@@ -68,22 +68,18 @@ export function cldVideoUrl(publicId: string, tx: string, ext: "mp4" | "jpg") {
 /* ─── Hero loop ──────────────────────────────────────────────────────── */
 
 const HERO_BASE = "riseandserve/videos/riseandserve/videos/IMG_8004";
-// Only the clean stretch of each clip: both open with a man standing right in
-// front of the lens and IMG_8004 ends with someone crossing close to it, which
-// read as dark shadows sliding through the loop. A short fade joins the two.
-const HERO_SPLICE =
-  "eo_2.9,so_0.8/fl_splice:transition_(name_fade;du_0.4),l_video:riseandserve:videos:riseandserve:videos:IMG_8005/eo_3.5,so_1.9/fl_layer_apply";
+const HERO_SPLICE = "fl_splice,l_video:riseandserve:videos:riseandserve:videos:IMG_8005/fl_layer_apply";
 
 /**
- * The packed Catfish King dining room on July 6: IMG_8004 (0.8–2.9 s) and
- * IMG_8005 (1.9–3.5 s) spliced into one ~3.3 s muted loop, in a wide crop for
- * desktop and the native 3:4 frame for phones. Posters are the loop's first frame.
+ * The packed Catfish King dining room on July 6: IMG_8004 and IMG_8005
+ * spliced into one ~7 s muted loop, in a wide crop for desktop and the
+ * native 3:4 frame for phones.
  */
 export const HERO_TX = {
   wide: `${HERO_SPLICE}/ac_none/c_fill,ar_16:9,w_1280/q_auto:eco`,
   tall: `${HERO_SPLICE}/ac_none/c_scale,w_720/q_auto:eco`,
-  widePoster: "so_0.8/c_fill,ar_16:9,w_1280/q_auto",
-  tallPoster: "so_0.8/c_scale,w_720/q_auto",
+  widePoster: "so_0/c_fill,ar_16:9,w_1280/q_auto",
+  tallPoster: "so_0/c_scale,w_720/q_auto",
 };
 
 export const HERO_MEDIA = {
