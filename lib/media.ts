@@ -229,8 +229,8 @@ const VIDEO_LIST: Video[] = [
     title: { en: "Every journey begins with a single act of support", es: "Cada camino empieza con un acto de apoyo" } },
   { slug: "jennifer-thanks", file: "IMG_2553", width: 1080, height: 1920, duration: 37, kind: "film", album: "story", posterAt: 3, lang: "en",
     title: { en: "A thank-you from CIS Greater Tarrant County", es: "Un agradecimiento de CIS Greater Tarrant County" } },
-  { slug: "sean-taylor", file: "AfterChanges", width: 1080, height: 1920, duration: 57, kind: "film", album: "story", posterAt: 2, lang: "en",
-    title: { en: "Sean Taylor, RISE board member", es: "Sean Taylor, miembro de la junta de RISE" } },
+  { slug: "shanta-lockett", file: "AfterChanges", width: 1080, height: 1920, duration: 57, kind: "film", album: "story", posterAt: 2, lang: "en",
+    title: { en: "Shanta Lockett, RISE board member", es: "Shanta Lockett, miembro de la junta de RISE" } },
 
   // July 6 community meal
   { slug: "final-draft-en", file: "Final_Draft_-_English", width: 1080, height: 1920, duration: 21, kind: "film", album: MEAL, posterAt: 2, lang: "en", spanish: "final-draft-es",

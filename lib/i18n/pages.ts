@@ -289,7 +289,7 @@ const about = {
       ],
     },
     board: {
-      name: "Sean Taylor",
+      name: "Shanta Lockett",
       role: "Board member",
       quote: "We have to rise where we are and give back as much as we can, so students feel together with their peers, not left behind.",
     },
@@ -342,7 +342,7 @@ const about = {
       ],
     },
     board: {
-      name: "Sean Taylor",
+      name: "Shanta Lockett",
       role: "Miembro de la junta",
       quote: "Tenemos que levantarnos donde estamos y ayudar todo lo que podamos, para que los estudiantes se sientan unidos a sus compañeros y no se queden atrás.",
     },

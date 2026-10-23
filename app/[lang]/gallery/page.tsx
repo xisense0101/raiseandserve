@@ -13,7 +13,7 @@ export const metadata = createMetadata({
   keywords: ["RISE gallery", "community meal photos", "pantry fill", "volunteer photos"],
 });
 
-const FILMS = ["campaign", "reel", "pantry-fill-recap", "ivy-beesley", "jennifer-murphy", "sean-taylor"];
+const FILMS = ["campaign", "reel", "pantry-fill-recap", "ivy-beesley", "jennifer-murphy", "shanta-lockett"];
 
 export default async function GalleryPage({ params }: PageProps<"/[lang]/gallery">) {
   const { lang: raw } = await params;

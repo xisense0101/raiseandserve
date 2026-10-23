@@ -26,7 +26,7 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
   const href = (h: string) => localizePath(lang, h);
 
   const story = playable(video("story-take-1"), lang);
-  const sean = playable(video("sean-taylor"), lang);
+  const shanta = playable(video("shanta-lockett"), lang);
   const team = photo("97c0a3f7-aee3-4122-892d-40f381018279");
   const crew = photo("724e9e18-e981-4ca2-87fd-2ee824f17746");
 
@@ -96,7 +96,7 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
             </div>
           </article>
           <article className="grid grid-cols-[120px_1fr] items-center gap-5 rounded-soft-lg bg-accent-2-100 p-6 sm:grid-cols-[150px_1fr] sm:p-8">
-            <PlayCard video={sean} tone="sage" size="sm" />
+            <PlayCard video={shanta} tone="sage" size="sm" />
             <div className="flex flex-col gap-3">
               <blockquote className="m-0 font-heading text-xl leading-snug text-pretty text-accent-2-900">“{t.board.quote}”</blockquote>
               <div className="flex flex-col">
