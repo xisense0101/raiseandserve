@@ -7,8 +7,9 @@ import type { TurnstileAction } from "@/lib/turnstile-actions";
 import { TURNSTILE_SITE_KEY as SITE_KEY } from "@/lib/turnstile-config";
 
 /**
- * Cloudflare Turnstile widget (managed, "interaction-only": invisible for
- * almost everyone, a single checkbox only when Cloudflare is unsure).
+ * Cloudflare Turnstile widget (managed, always visible). The box sits full
+ * width under the fields: it shows "Verifying…" then "Success!" for most
+ * visitors, and turns into a checkbox to click when Cloudflare needs one.
  *
  * The script is fetched when the form first comes near the viewport, so pages
  * pay nothing for it until a visitor is about to use a form. Tokens are
@@ -100,7 +101,7 @@ export default function Turnstile({ action, onToken, ref, className }: Props) {
             action,
             theme: "light",
             size: "flexible",
-            appearance: "interaction-only",
+            appearance: "always",
             language: lang,
             callback: (token) => {
               setStatus("ready");
@@ -135,12 +136,15 @@ export default function Turnstile({ action, onToken, ref, className }: Props) {
     };
   }, [action, lang]);
 
+  // The visible widget shows its own progress; only explain a failure, or the
+  // gap before the script arrives.
   const message =
     status === "error" ? dict.verification.failed : status === "idle" ? dict.verification.checking : null;
 
   return (
-    <div className={cn("flex flex-col gap-1", className)}>
-      <div ref={containerRef} />
+    <div className={cn("flex w-full flex-col gap-1", className)}>
+      {/* Turnstile's flexible size fills the width; 65px is its box height, reserved to avoid a layout jump. */}
+      <div ref={containerRef} className="min-h-[65px] w-full" />
       <p aria-live="polite" className={cn("text-xs", status === "error" ? "text-red-700" : "text-neutral-700")}>
         {message}
       </p>
