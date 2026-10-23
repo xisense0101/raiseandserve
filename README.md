@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# riseandserve.org
 
-## Getting Started
+Next.js 16 (App Router) site for RISE — Resourceful Impact in Scholastic Education.
+The redesign follows the "Organic" design handoff (warm palette, Caprasimo + Figtree,
+video-led storytelling via Cloudinary, EN/ES).
 
-First, run the development server:
+## Getting started
 
 ```bash
+cp .env.example .env.local   # fill in keys (see below)
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it's put together
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Area | Where | Notes |
+| --- | --- | --- |
+| Design tokens | `app/globals.css` (`@theme`) | `bg-page`, `bg-surface`, `text-ink`, `accent-100…900`, `accent-2-100…900`, `neutral-100…900`, `rounded-soft-lg` (28px), `shadow-sm/md/lg`, `.washed`, `.btn-primary`, `.btn-secondary`, `.tag-accent`. Old `primary-*` names are temporary aliases. |
+| Fonts | `app/[lang]/layout.tsx` | Self-hosted with `next/font` (no Google request at runtime). |
+| Languages | `proxy.ts`, `lib/i18n/*` | English at `/about`, Spanish at `/es/about`. Every page is prerendered for both. The EN/ES toggle stores a `NEXT_LOCALE` cookie; first-time visitors whose browser prefers Spanish land on `/es`. Server components use `getDictionary(lang)`, client components use `useLocale()`. |
+| Navbar / Footer | `components/layout/*` | Nav items live in `lib/site.ts`. |
+| Bot protection | `components/security/Turnstile.tsx`, `lib/turnstile.ts` | Every form sends a Cloudflare Turnstile token; every `/api/*` route verifies it before doing anything. Without the real keys (local dev, previews) Cloudflare test keys are used: forms work, but unprotected. |
+| Media catalog | `lib/media.ts` | Every photo (alt text, album) and video (event, aspect, poster frame) in Cloudinary cloud `nc7sref5`. Albums were sorted by camera timestamps: IMG_7891–8005 + UUID JPGs = July 6 meal, IMG_8155–8237 = July 20 CIS pantry fill. |
+| Media delivery | `lib/cloudinary.ts`, `components/media/*` | URL builders, a `next/image` loader (Cloudinary resizes, AVIF/WebP), `LoopVideo` (muted, loads only near the viewport, poster-only for reduced motion / Save-Data), `PlayCard` + one shared `VideoModal`. |
+| Pre-generated video | `scripts/cloudinary-eager.ts` | All derived videos/posters are eager-generated so nobody waits on a transcode. Re-run `npx tsx scripts/cloudinary-eager.ts --run` after changing a transformation or adding a video. |
+| Donations | `lib/givebutter.ts` | Givebutter script loads at idle on every page and immediately on `/donate`. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+See `.env.example`. Set the same values in Vercel → Project → Settings → Environment Variables.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` — Production only. The widget allows `riseandserve.org` and `www.riseandserve.org`; previews and local dev fall back to test keys automatically.
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` — Cloudinary console → Dashboard.
+- `RESEND_*` — email delivery for the forms.

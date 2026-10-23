@@ -1,11 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getClientIp, checkRateLimit } from "@/lib/rateLimit";
 import { resend } from "@/lib/resend";
+import { escapeHtml, safeHttpUrl } from "@/lib/security";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Rate Limiting
     const ip = getClientIp(req);
+
+    // Parse multipart form data
+    const formData = await req.formData();
+
+    // Bot check first, so automated traffic never consumes a visitor's rate-limit slot.
+    const verification = await verifyTurnstile(formData.get("turnstileToken"), ip, "apply");
+    if (!verification.ok) {
+      return NextResponse.json({ error: verification.error }, { status: verification.status });
+    }
+
+    // Rate limiting
     const { allowed, remainingMs } = checkRateLimit(ip);
     
     if (!allowed) {
@@ -15,9 +27,6 @@ export async function POST(req: NextRequest) {
         { status: 429 }
       );
     }
-
-    // 2. Parse Multipart FormData
-    const formData = await req.formData();
 
     // Extract Text Fields
     const firstName = formData.get("firstName") as string || "";
@@ -49,6 +58,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const linkedinHref = linkedinUrl ? safeHttpUrl(linkedinUrl) : null;
 
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
@@ -127,23 +138,23 @@ export async function POST(req: NextRequest) {
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; width: 180px; border-bottom: 1px solid #f1f5f9;">First Name</td>
-              <td style="padding: 10px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${firstName}</td>
+              <td style="padding: 10px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(firstName)}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Last Name</td>
-              <td style="padding: 10px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${lastName}</td>
+              <td style="padding: 10px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(lastName)}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Email Address</td>
-              <td style="padding: 10px 0; font-size: 14px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${email}" style="color: #007ed1; text-decoration: none; font-weight: 500;">${email}</a></td>
+              <td style="padding: 10px 0; font-size: 14px; border-bottom: 1px solid #f1f5f9;"><a href="mailto:${escapeHtml(email)}" style="color: #007ed1; text-decoration: none; font-weight: 500;">${escapeHtml(email)}</a></td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Phone Number</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${phone}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(phone)}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Location</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${city ? `${city}, ` : ""}${state || "N/A"}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${city ? `${escapeHtml(city)}, ` : ""}${escapeHtml(state || "N/A")}</td>
             </tr>
           </table>
 
@@ -153,35 +164,35 @@ export async function POST(req: NextRequest) {
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; width: 180px; border-bottom: 1px solid #f1f5f9;">Education Level</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${educationLevel}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(educationLevel)}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Institution / Program</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${institution || "N/A"}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(institution || "N/A")}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Field of Study</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${fieldOfStudy || "N/A"}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(fieldOfStudy || "N/A")}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Graduation Year</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${graduationYear || "N/A"}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(graduationYear || "N/A")}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Target Career</td>
-              <td style="padding: 10px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${targetCareerArea}</td>
+              <td style="padding: 10px 0; font-size: 14px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(targetCareerArea)}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Work Authorization</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${workAuthorization}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(workAuthorization)}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Availability</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${availability || "N/A"}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(availability || "N/A")}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Opportunity Types</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${opportunityTypes.join(", ")}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(opportunityTypes.join(", "))}</td>
             </tr>
           </table>
 
@@ -192,18 +203,18 @@ export async function POST(req: NextRequest) {
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; width: 180px; border-bottom: 1px solid #f1f5f9;">LinkedIn Profile</td>
               <td style="padding: 10px 0; font-size: 14px; border-bottom: 1px solid #f1f5f9;">
-                ${linkedinUrl ? `<a href="${linkedinUrl}" style="color: #007ed1; text-decoration: none;">${linkedinUrl}</a>` : "N/A"}
+                ${linkedinHref ? `<a href="${escapeHtml(linkedinHref)}" style="color: #007ed1; text-decoration: none;">${escapeHtml(linkedinUrl)}</a>` : escapeHtml(linkedinUrl || "N/A")}
               </td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #f1f5f9;">Reference Contact</td>
-              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${referenceContact}</td>
+              <td style="padding: 10px 0; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9;">${escapeHtml(referenceContact)}</td>
             </tr>
           </table>
 
           <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-top: 28px;">
             <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Prior Experience / Personal Statement</p>
-            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #1e293b; white-space: pre-wrap;">${priorExperience}</p>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #1e293b; white-space: pre-wrap;">${escapeHtml(priorExperience)}</p>
           </div>
         </div>
         

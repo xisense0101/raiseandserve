@@ -23,13 +23,15 @@ export const defaultKeywords = [
 export const publicRoutes = [
   { path: "/", priority: 1 },
   { path: "/about", priority: 0.8 },
-  { path: "/services", priority: 0.9 },
+  { path: "/programs", priority: 0.9 },
   { path: "/events", priority: 0.8 },
-  { path: "/apply", priority: 0.7 },
-  { path: "/volunteer", priority: 0.8 },
+  { path: "/get-involved", priority: 0.8 },
   { path: "/shop", priority: 0.6 },
   { path: "/contact", priority: 0.7 },
   { path: "/donate", priority: 0.9 },
+  { path: "/gallery", priority: 0.7 },
+  { path: "/gallery/2026-07-06-community-meal", priority: 0.6 },
+  { path: "/gallery/2026-07-20-pantry-fill", priority: 0.6 },
 ] as const;
 
 type SeoConfig = {
@@ -66,12 +68,9 @@ export function createMetadata({
       url,
       siteName,
       images: [
-        {
-          url: image,
-          width: 1024,
-          height: 791,
-          alt: `${siteName} logo`,
-        },
+        image === "/logo.jpeg"
+          ? { url: image, width: 1024, height: 791, alt: `${siteName} logo` }
+          : { url: image, width: 1200, height: 628, alt: title },
       ],
       locale: "en_US",
       type: "website",
