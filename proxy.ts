@@ -51,6 +51,9 @@ const PAGE = `<!doctype html>
   h1 { font-family: Caprasimo, ui-serif, Georgia, serif; font-weight: 400; font-size: clamp(28px, 6vw, 40px); line-height: 1.1; margin: 0 0 12px; }
   p { margin: 0; color: var(--muted); font-size: 16px; }
   p + p { margin-top: 18px; font-size: 14px; }
+  .contact { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(13,34,56,.12); }
+  .contact a { color: #075589; font-weight: 600; text-decoration: none; }
+  .contact a:hover { text-decoration: underline; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
 </style>
@@ -62,6 +65,7 @@ const PAGE = `<!doctype html>
   <h1>We&rsquo;re under maintenance</h1>
   <p>RISE is making improvements to this website. Please check back soon.</p>
   <p lang="es">Estamos en mantenimiento. Vuelve pronto.</p>
+  <p class="contact">Contact / Contacto: <a href="mailto:support@mentrily.com">support@mentrily.com</a></p>
 </main>
 </body>
 </html>`;
