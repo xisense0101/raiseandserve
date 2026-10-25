@@ -8,10 +8,11 @@ import { NextResponse, type NextRequest } from "next/server";
  * Nothing about the request can get past it: there is no cookie, header or
  * query-string bypass. Only the logo file is let through so the page can show it.
  *
- * To lift the wall, set MAINTENANCE_MODE=off in Vercel (Production) and
- * redeploy, or delete this file.
+ * Off by default. To bring the wall up, set MAINTENANCE_MODE=on in Vercel
+ * (Production) and redeploy; remove it (or set anything else) and redeploy to
+ * take it down.
  */
-const ENABLED = process.env.MAINTENANCE_MODE !== "off";
+const ENABLED = process.env.MAINTENANCE_MODE === "on";
 
 // The only file served while the wall is up: the logo shown on the page itself.
 const PASSTHROUGH = new Set(["/logo-mark.png"]);
