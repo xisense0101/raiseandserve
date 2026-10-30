@@ -75,7 +75,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
                 </Link>
               </div>
             </div>
-            <GiveBox className="hidden md:flex" />
+            <GiveBox glass className="hidden md:flex" />
           </div>
         </div>
         <GiveBox className="mt-4 md:hidden" />
